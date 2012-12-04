@@ -1,0 +1,396 @@
+head	1.9;
+access;
+symbols;
+locks;
+comment	@ * @;
+
+
+1.9
+date	2010.11.23.02.35.36;	author dmfrank;	state -;
+branches;
+next	1.8;
+
+1.8
+date	2010.11.23.00.37.06;	author dmfrank;	state -;
+branches;
+next	1.7;
+
+1.7
+date	2010.11.23.00.34.46;	author dmfrank;	state -;
+branches;
+next	1.6;
+
+1.6
+date	2010.11.23.00.32.57;	author dmfrank;	state -;
+branches;
+next	1.5;
+
+1.5
+date	2010.11.23.00.31.39;	author dmfrank;	state -;
+branches;
+next	1.4;
+
+1.4
+date	2010.11.22.23.42.30;	author dmfrank;	state -;
+branches;
+next	1.3;
+
+1.3
+date	2010.11.22.23.32.22;	author dmfrank;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2010.11.22.21.39.28;	author dmfrank;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2010.11.22.21.18.09;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.9
+log
+@-
+@
+text
+@/*	$Id: FindComponents.c,v 1.11 2010-11-22 18:34:26-08 dmfrank - $
+ *	Derek Frank, dmfrank@@ucsc.edu
+ *
+ *	NAME
+ *	  FindComponents.c
+ *
+ *	DESCRIPTION
+ *	  Program "FindComponents" main.  Implements the Graph and List ADTs. Reads
+ *	from a specified file a directed graph and uses the Depth First Search
+ *	algorithm to to find the strongly connected components in the given graph.
+ *	Prints output to a specified outfile.
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "Graph.h"
+
+#define MAX_LEN 250
+
+/* Method to print to outfile the strongly connected components */
+void printCC(FILE* out, GraphRef G, ListRef S){
+	fprintf(out, "G contains %d strongly connected components:\n", getCC(G));
+	int i, x;
+	if ( !isEmpty(S) ) { moveLast(S); }
+	i = 1;
+	while ( !offEnd(S) && i <= getCC(G) ) {
+		x = getCurrent(S);
+		fprintf(out, "Component %d:", i);
+		while ( getParent(G, x) != NIL ) {
+			fprintf(out, " %d", x);
+			movePrev(S);
+			x = getCurrent(S);
+		}
+		fprintf(out, " %d", x);
+		movePrev(S);
+		++i;
+		fprintf(out,"\n");
+	}
+}
+
+/* Main method */
+int main (int argc, char * argv[]) {
+	
+	/* check command line for correct number of arguments */
+	if( argc != 3 ){
+		printf("Usage: %s infile outfile\n", argv[0]);
+		exit(1);
+	}
+	
+	/* open files for reading and writing */
+	FILE *in, *out;
+	in = fopen(argv[1], "r");
+	out = fopen(argv[2], "w");
+	if( in==NULL ) {
+		printf("Unable to open file %s for reading\n", argv[1]);
+		exit(1);
+	}
+	if( out==NULL ) {
+		printf("Unable to open file %s for writing\n", argv[2]);
+		exit(1);
+	}
+	
+	/* declare and initialize variables */
+	char line[MAX_LEN];
+	char* token;
+	int linenum = 0;
+	int  n, x, y;
+	GraphRef G, T;
+	ListRef stack = newList();
+	
+	/* read and store the directed graph and print out its adjacency list */
+	while( fgets(line, MAX_LEN, in) != NULL ) {
+		++linenum;
+		token = strtok(line, " \n");
+		if ( linenum == 1 ) {
+			n = atoi(token);
+			G = newGraph(n);
+		}else {
+			x = atoi(token);
+			token = strtok(NULL, " \n");
+			y = atoi(token);
+			if( x != 0 ) {
+				addArc(G, x, y);
+			}
+		}
+	}
+	printGraph(out, G);
+	fprintf(out, "\n");
+	
+	/* Initialize stack list to a permutation from 1 to n */
+	int i;
+	for ( i = 1; i <= getOrder(G); ++i ) {
+		insertAfterBack(stack, i);
+	}
+	
+	/* Run DFS() on G, altering the stack list */
+	DFS(G, stack);
+	
+	/* Get the transpose of G and run DFS() on it attaining the strongly
+	 * connected components within the stack list */
+	T = transpose(G);
+	DFS(T, stack);
+	
+	/* Print the strongly connected components of G */
+	printCC(out, T, stack);
+	
+	/* Free memory */
+	freeList(&stack);
+	freeGraph(&G);
+	freeGraph(&T);
+	
+	/* close files */
+	fclose(in);
+	fclose(out);
+	
+	return 0;
+}
+@
+
+
+1.8
+log
+@-
+@
+text
+@d1 1
+a1 1
+/*	$Id: FindComponents.c,v 1.9 2010-11-22 16:36:57-08 dmfrank - $
+d76 1
+a76 1
+		if( linenum == 1 ) {
+d91 1
+a91 1
+	/* Initialize stack list to permutation from 1 to n */
+@
+
+
+1.7
+log
+@-
+@
+text
+@d1 1
+a1 1
+/*	$Id: FindComponents.c,v 1.7 2010-11-22 16:31:16-08 dmfrank - $
+d21 1
+a21 1
+/* Print to file the stack list of strongly connected components */
+@
+
+
+1.6
+log
+@-
+@
+text
+@a22 1
+	fprintf(out,"\n");
+@
+
+
+1.5
+log
+@-
+@
+text
+@d32 1
+a32 1
+			fprintf(out, " %d", x)
+d103 1
+a103 1
+	GraphRef T = transpose(G);
+d110 1
+a110 1
+	freeList(&L);
+@
+
+
+1.4
+log
+@-
+@
+text
+@d1 1
+a1 1
+/*	$Id: FindComponents.c,v 1.6 2010-11-22 15:42:13-08 dmfrank - $
+d16 1
+d19 2
+d24 17
+a40 3
+	fprintf(out, "Stack of G's %d strongly connected components:\n", getCC(G));
+	printList(out, S);
+	fprintf(out,"\n");
+d43 1
+a44 1
+	FILE *out;
+d47 2
+a48 2
+	if( argc != 2 ) {
+		printf("Usage: %s outfile\n", argv[0]);
+d52 8
+a59 2
+	/* open file for writing */
+	out = fopen(argv[1], "w");
+d61 1
+a61 1
+		printf("Unable to open file %s for writing\n", argv[1]);
+d65 26
+a90 4
+	/* Create graph on n vertices */
+	int n = 8;
+	GraphRef G = newGraph(n);
+	ListRef L = newList();
+d92 1
+a92 1
+	/* Initialize stack list to length n */
+d95 1
+a95 1
+		insertAfterBack(L, i);
+d98 2
+a99 16
+	/* Add directed edges to graph and print */
+	addArc(G, 1, 2);
+	addArc(G, 2, 3);
+	addArc(G, 2, 5);
+	addArc(G, 2, 6);
+	addArc(G, 3, 4);
+	addArc(G, 3, 7);
+	addArc(G, 4, 3);
+	addArc(G, 4, 8);
+	addArc(G, 5, 1);
+	addArc(G, 5, 6);
+	addArc(G, 6, 7);
+	addArc(G, 7, 6);
+	addArc(G, 7, 8);
+	addArc(G, 8, 8);
+	printGraph(out, G);
+d101 2
+a102 7
+	/* Test and print DFS(), transpose(), and copyGraph() */
+	DFS(G, L);
+	/*fprintf(out, "SCC: %d\n", getCC(G));*/
+	fprintf(out, "\nCopy:\n");
+	GraphRef C = copyGraph(G);
+	printGraph(out, C);
+	fprintf(out, "\nTranspose:\n");
+d104 1
+a104 2
+	printGraph(out, T);
+	DFS(T, L);
+d106 2
+a107 2
+	/* Print the stack list of strongly connected components */
+	printCC(out, T, L);
+a111 1
+	freeGraph(&C);
+d115 1
+@
+
+
+1.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+/*	$Id: FindComponents.c,v 1.5 2010-11-22 15:28:00-08 dmfrank - $
+d70 1
+a70 1
+	/* Test and print DFS(), transpose(), and copy() */
+d72 5
+a76 1
+	fprintf(out, "Transpose:\n");
+d82 1
+a82 1
+	printCC(out, G, L);
+d87 2
+@
+
+
+1.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+/*	$Id: FindComponents.c,v 1.4 2010-11-22 13:39:03-08 dmfrank - $
+d5 1
+a5 1
+ *
+d8 4
+a11 1
+ *
+d18 1
+d21 1
+a21 1
+	fprintf(out, "G contains %d strongly connected components:", getCC(G));
+d42 1
+d47 1
+d53 1
+a59 1
+	addArc(G, 3, 7);
+a67 1
+	
+a68 2
+	fprintf(out, "Order = %d, Length = %d\n", getOrder(G), getLength(L));
+	printList(out, L);
+d70 1
+d72 3
+a74 1
+	GraphRef T = copyGraph(G);
+d77 1
+d80 1
+@
+
+
+1.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+/*	$Id: FindComponents.c,v 1.2 2010-11-22 13:01:31-08 dmfrank - $
+a38 1
+	int dest;
+d43 1
+a43 1
+	for ( i = 1; i >= getOrder(G); ++i ) {
+d64 2
+@

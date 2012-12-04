@@ -1,0 +1,16 @@
+1: 4 5
+2: 3 6
+3: 2 7
+4: 1 5
+5: 1 4
+6: 2 7
+7: 3 6
+
+The distance from 2 to 7 is 2
+A shortest 2-7 path is: 2 3 7 
+
+The distance from 3 to 6 is 2
+A shortest 3-6 path is: 3 2 6 
+
+The distance from 1 to 7 is infinity
+No 1-7 path exists

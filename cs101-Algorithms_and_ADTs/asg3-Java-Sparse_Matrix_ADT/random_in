@@ -1,0 +1,88 @@
+#!/usr/local/bin/perl
+###############################################################################
+#
+#   random_in
+#   Creates a random input file for CMPS 101 pa3.  Matrix entries will be
+#   in the range $min to $max, which are defined below.  To run this script
+#   under unix save the file in your pa3 directory, set it to have executable 
+#   permission, then type random_in at the command prompt.
+#
+###############################################################################
+
+
+# local variables #############################################################
+my($row, $col, $val, $k, $min, $max, $range);
+my($input_file, $n, $a, $b);
+my(@usedA, @usedB);
+$min = -10000;
+$max = +10000;
+$range = $max - $min;
+
+
+# seed random number generator ################################################
+srand;
+
+
+# get $input_file, $n, $a, and $b from user ###################################
+print "Enter the name of input file to be created: ";
+$input_file = <STDIN>; 
+chomp($input_file);
+
+print "Enter the matrix size (number of rows and columns): ";
+$n = <STDIN>; 
+chomp($n);
+if( $n<=0 ) { 
+   print "Matrix size must be positive\n"; 
+   exit;
+}
+@range = (1 .. $n);
+
+print "Enter the number of non-zero entries in matrix A: ";
+$a = <STDIN>; 
+chomp($a);
+if( $a<0 || $a>$n*$n){
+   print "Number of non-zero entries must be in the range 0 to $n*$n\n";
+   exit;
+}
+
+print "Enter the number of non-zero entries in matrix B: ";
+$b = <STDIN>; 
+chomp($b);
+if( $b<0 || $b>$n*$n){
+   print "Number of non-zero entries must be in the range 0 to $n*$n\n";
+   exit;
+}
+
+
+# create random input file ####################################################
+open(OUT, ">$input_file");
+print OUT "$n $a $b\n";
+print OUT "\n";
+
+# create matrix A
+for($k=1; $k<=$a; $k++){
+   $row = int(rand($n)) + 1;
+   $col = int(rand($n)) + 1;
+   while( $usedA[$row][$col]==1 ){
+      $row = int(rand($n)) + 1;
+      $col = int(rand($n)) + 1;
+   }
+   $usedA[$row][$col] = 1;
+   $val = sprintf("%.1f", rand($range) + $min);
+   print OUT "$row $col $val\n";
+}
+print OUT "\n";
+
+# create matrix B and close file
+for($k=1; $k<=$b; $k++){
+   $row = int(rand($n)) + 1;
+   $col = int(rand($n)) + 1;
+   while( $usedB[$row][$col]==1 ){
+      $row = int(rand($n)) + 1;
+      $col = int(rand($n)) + 1;
+   }
+   $usedB[$row][$col] = 1;
+   $val = sprintf("%.1f", rand($range) + $min);
+   print OUT "$row $col $val\n";
+}
+close(OUT);

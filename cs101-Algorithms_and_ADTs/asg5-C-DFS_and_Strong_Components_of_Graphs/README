@@ -1,0 +1,50 @@
+$Id: README,v 1.3 2010-11-22 18:38:21-08 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+
+Assignment: pa5
+	This assignment contains:
+		List.c
+		List.h
+		ListTest.c
+		Graph.c
+		Graph.h
+		GraphTest.c
+		FindComponents.c
+		Makefile
+		README
+
+ ******************************************************************************/
+
+	List.c:
+		A linked list for integers with markers to keep track of the
+	front and rear of the double ended queue.  Includes a current-position
+	marker that can move between previous and next positions.
+	
+	List.h:
+		A header file for List.c.
+
+	ListTest.c:
+		A class made specifically to run and test List.c to see how it
+	functions.
+  
+	Graph.c:
+		Implementation file for the Graph ADT.  Contains a Dirrected
+	Graph on n vertices.  Uses the List ADT to keep track of adjacent
+	vertices.  Includes a Depth First Search algorithm used to find the
+	strongly connected components of a Directed Graph.
+
+	Graph.h:
+		A header file for Graph.c.
+
+	GraphTest.c
+		A class made specifically to run and test Graph.c to see how
+	it functions.
+
+	FindComponents.c:
+		Program "FindComponents" main.  Implements the Graph and List
+	ADTs. Reads from a specified file a directed graph and uses the Depth
+	First Search algorithm to to find the strongly connected components in
+	the given graph.  Prints output to a specified outfile.
+
+	Makefile:
+		Used to compile all c files for this assignment on Unix.

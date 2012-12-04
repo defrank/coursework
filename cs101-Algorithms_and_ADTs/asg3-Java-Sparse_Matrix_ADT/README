@@ -1,0 +1,43 @@
+$Id: README,v 1.7 2010-10-31 07:26:38-07 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+
+Assignment: pa3
+  This assignment contains:
+    List.java
+    Matrix.java
+    MatrixTest.java
+    Sparse.java
+    Makefile
+    README
+
+  List.java:
+    A linked list for Objects with markers to keep track of the
+  front and rear of the double ended queue.  Includes a current-
+  position marker that can move to previous and next positions.
+  
+  Matrix.java:
+    A class representing a sparse (the number of non-zero entries
+  is small compared to the total number of entries) n*n matrix of
+  double values.  Contains a List array that holds Objects.  The
+  Object specified by Matrix to be contained in a List is a
+  private inner class, Entry, that contains the column entry
+  along with its corresponding double value.  This class is
+  capable of performing specified Matrix operations that exploits
+  the (expected) sparseness of it's Matrix operands.
+  
+  MatrixTest.java:
+    A class made specifically to run and test Matrix.java and
+  List.java to see how they function.
+  
+  Sparse.java:
+    Sparse.java is the main class to implement the classes
+  Matrix.java and List.java.  It takes two arguments from the
+  command line: input_file output_file.  Sparse reads input from
+  specified input_file, then stores the information into two
+  Matrices.  Sparse then performs calculations on these Matrices
+  and writes the output to the specified output_file.
+  
+  Makefile
+    Used to compile Sparse.java, MatrixTest.java, Matrix.java,
+  and List.java on Unix.
+

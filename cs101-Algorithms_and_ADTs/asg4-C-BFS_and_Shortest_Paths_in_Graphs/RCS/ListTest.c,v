@@ -1,0 +1,230 @@
+head	1.5;
+access;
+symbols;
+locks;
+comment	@ * @;
+
+
+1.5
+date	2010.11.15.03.42.28;	author dmfrank;	state -;
+branches;
+next	1.4;
+
+1.4
+date	2010.11.15.03.38.01;	author dmfrank;	state -;
+branches;
+next	1.3;
+
+1.3
+date	2010.11.15.03.31.57;	author dmfrank;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2010.11.15.02.10.35;	author dmfrank;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2010.11.14.23.34.14;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@-
+@
+text
+@/*******************************************************************************
+ *  $Id: ListTest.c,v 1.4 2010-11-14 19:31:28-08 dmfrank - $
+ *	Derek Frank, dmfrank@@ucsc.edu
+ *	
+ *	NAME
+ *	  ListTest.c
+ *  
+ *	DESCRIPTION
+ *	  A class to run and test the List.c ADT.
+ ******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "List.h"
+
+int main (int argc, char * argv[]) {
+	FILE *out;
+	
+	/* check command line for correct number of arguments */
+	if( argc != 2 ) {
+		printf("Usage: %s outfile\n", argv[0]);
+		exit(1);
+	}
+	
+	/* open file for writing */
+	out = fopen(argv[1], "w");
+	if( out==NULL ) {
+		printf("Unable to open file %s for writing\n", argv[1]);
+		exit(1);
+	}
+	
+	ListRef A = newList();
+	ListRef B = newList();
+	int i;
+	
+	for ( i=1; i<=10; ++i) {
+		insertAfterBack(A, i);
+		insertAfterBack(B, 11-i);
+	}
+	fprintf(out, "A = ");
+	printList(out, A);
+	fprintf(out, "\nB = ");
+	printList(out, B);
+	
+	for( i=1; i<=6; ++i ) {
+		insertAfterBack(A, getFront(B));
+		deleteFront(B);
+	}
+	fprintf(out, "\nA = ");
+	printList(out, A);
+	fprintf(out, "\nB = ");
+	printList(out, B);
+	ListRef C = copyList(A);
+	fprintf(out, "\nC = ");
+	printList(out, C);
+	
+	if ( equals(A,B) ) { fprintf(out, "\nA equals B"); }
+	else { fprintf(out, "\nA does not equal B"); }
+	if ( equals(A,C) ) { fprintf(out, "\nA equals C"); }
+	else { fprintf(out, "\nA does not equal C"); }
+	
+	ListRef D = catList(A,B);
+	fprintf(out, "\nD = ");
+	printList(out, D);
+	if ( equals(A,D) ) {
+		fprintf(out, "\nA equals D");
+	}else {
+		fprintf(out, "\nA does not equal D");
+	}
+	if ( equals(D,A) ) { fprintf(out, "\nD equals A"); }
+	else { fprintf(out, "\nD does not equal A"); }
+	
+	int lengthCompare = ( getLength(A) == getLength(D) );
+	fprintf(out, "\nLength A = %d and Length D = %d and Length C = %d",
+			getLength(A),getLength(D),getLength(C));
+	fprintf(out, "\nLength Compare = %d\n",lengthCompare);
+	
+	makeEmpty(D);
+	printList(out, D);
+	freeList(&D);
+	printList(out, D);
+	
+	/* close files */
+	fclose(out);
+	
+	return (0);
+}
+@
+
+
+1.4
+log
+@-
+@
+text
+@d20 1
+a20 1
+	if( argc != 2 ){
+d27 1
+a27 1
+	if( out==NULL ){
+@
+
+
+1.3
+log
+@-
+@
+text
+@d71 1
+a71 1
+	else { fprintf("out, \nD does not equal A"); }
+@
+
+
+1.2
+log
+@-
+@
+text
+@d2 1
+a2 1
+ *  $Id: ListTest.c,v 1.3 2010-11-14 18:01:08-08 dmfrank - $
+d28 1
+a28 1
+		printf("Unable to open file %s for writing\n", argv[2]);
+@
+
+
+1.1
+log
+@-
+@
+text
+@d2 1
+a2 1
+ *  $Id: ListTest.c,v 1.2 2010-11-09 17:45:48-08 dmfrank - $
+d16 16
+a31 1
+int main (int argc, const char * argv[]) {
+d40 4
+a43 4
+	printf("A = ");
+	printList(A);
+	printf("\nB = ");
+	printList(B);
+d49 4
+a52 4
+	printf("\nA = ");
+	printList(A);
+	printf("\nB = ");
+	printList(B);
+d54 2
+a55 2
+	printf("\nC = ");
+	printList(C);
+d57 4
+a60 4
+	if ( equals(A,B) ) { printf("\nA equals B"); }
+	else { printf("\nA does not equal B"); }
+	if ( equals(A,C) ) { printf("\nA equals C"); }
+	else { printf("\nA does not equal C"); }
+d63 2
+a64 2
+	printf("\nD = ");
+	printList(D);
+d66 1
+a66 1
+		printf("\nA equals D");
+d68 1
+a68 1
+		printf("\nA does not equal D");
+d70 2
+a71 2
+	if ( equals(D,A) ) { printf("\nD equals A"); }
+	else { printf("\nD does not equal A"); }
+d74 3
+a76 3
+	printf("\nLength A = %d and Length D = %d and Length C = %d", getLength(A),
+		   getLength(D),getLength(C));
+	printf("\nLength Compare = %d\n",lengthCompare);
+d79 1
+a79 1
+	printList(D);
+d81 5
+a85 1
+	printList(D);
+@

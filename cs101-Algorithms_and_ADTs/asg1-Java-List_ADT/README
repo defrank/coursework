@@ -1,0 +1,33 @@
+$Id: README,v 1.1 2010-10-10 04:36:33-07 - - $
+Derek Frank, dmfrank@ucsc.edu
+
+Assignment: pa1
+  This assignment contains:
+    List.java
+    ListTest.java
+    Shuffle.java
+    Makefile
+    README
+
+  List.java:
+    A linked list for integers with markers to keep track of the front
+  and rear of the double ended queue.  Includes, as well, a current-
+  position marker that can move between previous and next positions.
+  
+  ListTest.java:
+    A class made specifically to run and test List.java to see how it
+  functions.
+  
+  Shuffle.java:
+    Reads permutations line by line from a file and shuffles a list
+  the length of the permutation according to the operators found in
+  the permutations.  The list is shuffled until it returns to its
+  original state and the number of shuffles is counted.  The first
+  shuffle along with the number of shuffles needed to return the
+  list to its original state are written to a file specified by the
+  user line by line with its corresponding permutation.  The first
+  line read from the file by Shuffle is assumed to be the number of
+  permutations in the file.
+  
+  Makefile
+    Used to compile Shuffle.java on Unix.

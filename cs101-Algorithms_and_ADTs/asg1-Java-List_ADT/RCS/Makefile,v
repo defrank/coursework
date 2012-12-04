@@ -1,0 +1,47 @@
+head	1.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.1
+date	2010.10.10.11.34.05;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@# $Id: Makefile,v 1.1 2010-10-07 20:06:43-07 derekmfrank - $
+# Makefile for CMPS 101 pal
+
+MAINCLASS  = Shuffle
+JAVAC      = javac
+JAVASRC    = $(wildcard *.java)
+SOURCES    = $(JAVASRC) makefile README
+CLASSES    = $(patsubst %.java, %.class, $(JAVASRC))
+JARCLASSES = $(patsubst %.class, %*.class, $(CLASSES))
+JARFILE    = $(MAINCLASS)
+
+all: $(JARFILE)
+
+$(JARFILE): $(CLASSES)
+        echo Main-class: $(MAINCLASS) > Manifest
+        jar cvfm $(JARFILE) Manifest $(JARCLASSES)
+        chmod +x $(JARFILE)
+        rm Manifest
+
+%.class: %.java
+        $(JAVAC) $<
+
+clean:
+        rm -f *.class $(JARFILE)
+@
