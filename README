@@ -1,0 +1,16 @@
+$Id: README,v 1.1 2012-10-19 16:26:49-07 dmfrank - $
+Derek Frank (dmfrank@greenghoti.com)
+Readme
+
+This repository is used to display coursework I have done.
+
+Directories:
+  Coursework
+  |- cs101-Algorithms_and_ADTs
+  |  |- asg1-Java-List_ADT
+  |  |- asg2-C-List_ADT
+  |  |- asg3-Java-Sparse_Matrix_ADT
+  |  |- asg4-C-BFS_and_Shortest_Paths_in_Graphs
+  |  |- asg5-C-DFS-and_Strong_Components_of_Graphs
+  |- cs104a-Fundamental_Compiler_Design_I
+  
