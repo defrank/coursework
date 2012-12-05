@@ -1,0 +1,222 @@
+
+Derek Frank (dmfrank@ucsc.edu)
+Alexander McCaleb (amccaleb@ucsc.edu)
+Alex Kerr (ahkerr@ucsc.edu)
+
+CMPS 111 Spring 2012
+Project 4: Design Document
+
+GOAL:
+  The main goal for this project is to use a combination of system calls
+  and user program to implement encryption for the MINIX file system.
+
+
+AVAILABLE RESOURCES:
+  - System calls:
+      chmod(), stat(), sys_safecopyto(), sys_safecopyfrom()
+
+  - Encryption/decryption using Rijndael (AES) cipher code.
+
+  - The kernel servers vfs (virtual file system) and mfs (minix file system)
+  will be used to handle system calls that involve both adding an
+  encryption key for a particular user ID and either encrypt data read from
+  the user decrypt data to sent to the user based on a user specific key.
+
+
+DESIGN:
+  
+  System Calls:         
+    
+    In order to implement kernel mode encryption we had had to write a single
+    system call, SetKey which set the encryption key for the encrypted file and
+    passed it to the kernal so that the file could be decrypted only when the 
+    correct key for a specific user was was entered in. Setkey need to not only
+    keep track of the key but also the user ID that gave it that key. That way 
+    the each user has a unique encyption key, theoretically allowing each user 
+    to only view their own encrypted files. setkey needs to be able to handle 
+    up to 8 different user ID and keys 
+    
+    
+  	 int setkey (unsigned int k0, unsigned int k1)
+      Create a message.
+      Assign k0 to the first int of the message.
+      Assign k1 to the second int of the message.
+      Pass the message to the VFS to use with do_setkey().
+
+	int do_setkey(void)
+	
+		do_setkey communicates between the vfs and mfs. Here, we send a request 
+		to all file systems to set our passed 	in keys. Those that have no 
+		definition of fs_setkey should return "not implemented" while the mfs 
+		will actually set the keys in our key table. As with fs_setkey described 
+		below, similar changes need to be made to files Proto.h & table.c in 
+		vfs. do_setkey sends this request through req_setkey
+
+	int req_setkey(int fs_e)
+
+		req_setkey actually caries our request from the vfs to the mfs. We pass 
+		in the endpoint of our file system to & set our message type to 	
+		REQ_SETKEY. From here, we invoke fs_sendrec to properly send our request 
+		to the given file system.
+
+    	int fs_setkey (void)
+    
+    
+    The first thing that needed to be done in creating a system a call for 
+    minix was editing table.c in servers/mfs. all other files in server should 
+    be unable to call the setkey() system call to assure that other minix 
+    systems are not allowed access to the encryption key that is generated 
+    from the protectfile program.
+      
+		fs_setkey,		/* 33 */
+		
+	Once table.c is edited the both callnr.h and proto.h need to be edited to 
+	allow for a new system call:
+	
+	/* setkey.c  in Proto.h*/
+	_PROTOTYPE( void fs_setkey, (unsigned int k0, unsigned int k1)	);
+	
+	/* callnr.h */
+	#define DO_SETKEY      0
+	
+	Now that the system call had been defined and kernal now knew how to handle 
+	a call to setkey(). The function itself needs to be writen and placed in 
+	servers/mfs
+	
+	
+	Inorder to keep track of the differnet keys for each user, we will create a 
+	struct, or a static table that will connect each user ID to the correct K0 
+	and K1 values for the encryption key. 
+	
+  SETTING UP ENCRYPTION AND DECRYPTION:
+  	
+  	In order to mark a file for encryption or decryption we need to call the 
+  	'chmod' system call to set the sticky bits of the file. Once a files sticky 
+  	bit have been set to 01000 in octal. we then need to edit the read.c and 
+  	write.c files in servers/mfs in order to handle the reading and writing of 
+  	encrypted files and how to deal with them when they are not encrypted or 
+  	when the proper key is not provided. 
+	
+  PROTECTFILE:
+    
+      The goal of the user program protectfile is to prepare a file to be
+    maintained as an encrypted file, or to reverse this process.  The user
+    must specify a maximum of a 16 character hexidecimal number as their
+    key and the name of the file they wish to keep encrypted or
+    unencrypted.  An encrypted file is designated by having its sticky bit
+    set, so if the user wishes to protect a file that has already been
+    protected, then nothing will happen.  Likewise, if the user wishes to
+    make a file remain unencrypted that already is, then nothing will
+    happen.
+      If the user specifies encryption, then the file will be overwritten
+    with an encrypted version using the Rijndael (AES) cipher and the
+    provided key.  Afterwards the sticky bit is set so that the kernel will
+    maintain decrypting the file for the user each time the user with the
+    proper key set wishes to read the file.
+      If the user specifies decryption, then the file will be overwritten
+    with the decrypted version using the Rijndael (AES) cipher and the
+    provided key.  Afterwards the sticky bit is unset so that the kernel
+    knows not to decrypt the file for the user each time the user with the
+    proper rights wishes to read the file.
+
+    VARIABLES:
+
+      char *filename
+        The name of the file to be encrypted/decrypted.
+      
+      char *hexkey
+        The hexadecimal key passed by the user.
+
+      struct stat *filestat
+        A pointer to a struct stat that is useful for attaining information
+        regarding the file to be encrypted/decrypted.  Can access its
+        protection bits, file id number, and simply determine if the file
+        actually exists.
+
+      int cryptflag
+        Set to a specific value based on whether the user wishes to encrypt
+        (e -> 2) or decrypt (d -> 1).
+
+    FUNCTIONS:
+
+      int cryption (char *filename, char *hexkey, struct stat *filestat)
+        Modeled after Miller's encrypt.c code.
+        filename is the name of the file being encrypted/decrypted.
+        hexkey is the maximum of a 16 character hexidecimal number provided
+          by the user as an argument.
+        filestat provides useful information about the file, in particular,
+          the fileID number.
+        The hexkey is converted from a character string (represented in
+          hexadecimal) to a long long and then written to the front of the
+          key buffer byte by byte.
+        The file is then read 16 bytes at a time, XORed with the encrypted
+          CTR value, and then written back to the file.  The use of CTR
+          encryption allows the same algorithm to do both encryption and
+          decryption, i.e., running the algorithm on the same data twice
+          reproduces the original data.
+        Returns a negative value on error and a positive on success.
+
+      int encryptfile (char *filename, char *key, struct stat *filestat)
+        Calls cryption() to encrypt the file.
+        Sets the file's sticky bit using chmod().
+        Returns a negative number on error and positive on success.
+
+      int decryptfile (char *filename, char *key, struct stat *filestat)
+        Calls cryption() to decrypt the file.
+        Unsets the file's sticky bit using chmod().
+        Returns a negative number on error and positive on success.
+
+      int scan_args (int argc, char **argv, int *cryptflag)
+        This function is primarily used to check for errors and consistency
+          with the arguments passed by the user.
+        Must verify there are exactly 4 arguments and in a specific order:
+          an execution name, an encrypt (e) or decrypt (d) flag, a hex key,
+          and a file name.
+        Must verify the encrypt/decrypt flag is either "e" or "d" and
+          nothing else.
+        Must verify the hex key is a valid hex number and no longer than
+          16 characters.
+        Must verify the file exists.
+        Return a negative number on error and positive on success.
+
+      int main (int arc, char **argv)
+        Call on scan_args() to scan the argument list.
+        Pad the front of the hex key with zeros if it is smaller than 16
+          characters.
+        Call stat() on the file to have access to the file's protection
+          bits and its file ID number.
+        If the user passed the "e" flag and the file's sticky bit is unset,
+          then call on encryptfile().
+        Else if the user passed the "d" flag and the file's sticky bit is
+          set, then call on decryptfile().
+        Otherwise do nothing.
+        Return a negative number on error and positive on success.
+
+TESTING:
+
+
+		In order to test this program we'll install the files into the minix 
+	operating system, encrypt them, decrypt them, and then attempt to read 
+	the encytped file at several different points in the operating system to 
+	see if the file is indeed remaining encrypted throughout the transfer from 
+	user space to kernal space and back. First step in to confirm that 
+	encryption works so we start by displaying the un-encrypted file, then 
+	encypting it and once again displying the file to confirm encryption. Then 
+	next step is to send the encrypted data to the kernal and confirm that we 
+	are not leaving or sending and un-encrypted form of the file. Once we have 
+	confirmed the file is able to be encypted and sent to kernal space 
+	correctly we would begin testing the decryption by not only testing to see 
+	if the file is able to decrypt when it enters user space but also that 
+	while the it is being decyrpted that and unecrypted form of the file is not 
+	being stored in the kernal buffer. To check this we will have a program 
+	that will observe the file in the kernal and display the kernal buffer and 
+	various times while the file is being copied to user space to assure no 
+	matter what the kernal is doing the file is always encrypted when its not 
+	in user space.
+	
+		These test will all be preformed after the setkey system call is 
+	confirmed to work correctly. Encryption will not work properly if the 
+	setkey system call doesnt work. setkey will be tested not only by 
+	setting different keys for encryption but also by trying to encrypt and 	
+	decypt files as different users. That would ensure that the encryption 
+	key is also tied to the user ID 

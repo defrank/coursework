@@ -1,0 +1,32 @@
+$Id: README,v 1.1 2012-05-31 18:45:29-07 dmfrank - $
+Derek Frank (dmfrank@ucsc.edu)
+Alexander McCaleb (amccaleb@ucsc.edu)
+Alexander Kerr (ahkerr@ucsc.edu)
+
+CMPS 111 Spring 2012
+Project 4: README
+
+  There are two useful Makefiles for this project.  One exists in the
+current/primary directory and is used to setup the setkey component of
+this assignment by moving all of the necessary files to the correct place
+in the Minix system.  It does not actually compile the kernel or libraries.
+That must be done by hand and is explained below.  The second Makefile
+is in the protectfile directory and is used to build and test that
+component of the project.
+
+MAKEFILE COMMANDS:
+  make
+    Runs setkey setup.
+  
+  make sksetup
+    Same as default.
+
+INSTRUCTIONS: Compile kernel for setkey
+  bash-$ make
+  bash-$ cd /usr/src/servers
+  bash-$ make install
+  bash-$ cd /usr/src
+  bash-$ make libraries
+  bash-$ cd /usr/src/tools
+  bash-$ make hdboot
+  bash-$ make install

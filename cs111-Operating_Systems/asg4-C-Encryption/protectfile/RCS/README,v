@@ -1,0 +1,58 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2012.06.10.20.47.54;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@$Id: $
+Derek Frank (dmfrank@@ucsc.edu)
+Alexander McCaleb (amccaleb@@ucsc.edu)
+Alexander Kerr (ahkerr@@ucsc.edu)
+
+CMPS 111 Spring 2012
+Project 4: README - protectfile
+
+This README is for the protectfile portion of the assignment.  The Makefile
+provided in this directory is used to build and test the program.  The
+Makefile will test with a 16 character key, but feel free to change it or
+the name of the test file, which are both variables in Makefile.
+
+MAKEFILE COMMANDS:
+
+  make all
+    Will build the protectfile executable.
+
+  make test
+    Will set up the test file, build the executable, and test both
+    protecting (encrypting) and unprotecting (decrypting) the test file.
+
+  make teste
+    Will not work without setting up the test file or running "make test"
+    first.  Tests the "e" flag functionality of the program.
+
+  make testd
+    Will not work without setting up the test file or running "make test"
+    first.  Tests the "d" flag functionality of the program.
+    
+  make clean
+   Removes all object files in the directory.
+
+  make spotless
+    Removes the executable, object files, and test file.
+@

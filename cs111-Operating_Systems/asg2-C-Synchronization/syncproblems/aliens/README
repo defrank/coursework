@@ -1,0 +1,25 @@
+$Id: README,v 1.1 2012-05-12 18:06:03-07 dmfrank - $
+Derek Frank (dmfrank@ucsc.edu)
+Harrison Vuong (hvuong@ucsc.edu)
+David Zou (dzou@ucsc.edu)
+README - alien synchronization problem
+
+NOTES:
+  There is a Makefile included for this alien synchronization problem
+  that will compile the three files on Minix3.  It is important to note
+  that when running an alien, the user must specify both its gender
+  and number of times to reproduce (i.e., get back in line).  It is
+  probably a good idea to set all the aliens to the same number of
+  reproductions so that the chance of a sleeping process left on a
+  semaphore process queue is minimized.  Such an error is the fault
+  of the user.  Also a good idea to run the aliens as background
+  processes.  Freeing the semaphores is done after running the alien
+  instances to prevent catastrophe. 
+
+Note: Be sure run.sh is executable.  Should be, but sometimes
+      transferring files changes that bit.
+
+USAGE:
+  bash-$ make
+  bash-$ ./run.sh
+  bash-$ ./freealiens

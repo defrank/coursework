@@ -1,0 +1,49 @@
+$Id: README,v 1.3 2012-04-28 08:27:22-07 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+CMPS 111 Spring 2012
+Project 1
+
+Files:
+   auxlib.c
+   auxlib.h
+   design.txt
+   Makefile
+   README
+   shell.c
+
+Description:
+   auxlib.c
+       An implementation file for useful functions written by Wesley
+       Mackey.
+
+   auxlib.h
+       An interface file for useful functions written by Wesley Mackey.
+
+   design.txt
+       The design document associated with this assignment.
+
+   Makefile
+       A Makefile to build the program with gcc.
+       Commands:
+           make
+             - produces the binary myshell
+           make all
+             - produces the binary myshell
+           make clean
+             - cleans the directory by removing object files, dependency
+               files, and possibly a core dump.
+           make spotless
+             - same as clean, but also removes the binary executable
+           make deps
+             - creates a dependency file
+
+   Makefile-linux
+       A Makefile that I used on my Linux OS, but would not work as is on
+       minix.
+
+   shell.c
+       The main program.
+
+
+Notes:
+   I was unable to complete the piping aspect of the project.

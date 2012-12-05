@@ -1,0 +1,53 @@
+$Id: README,v 1.1 2012-05-12 19:48:02-07 dmfrank - $
+Derek Frank (dmfrank@ucsc.edu)
+Harrison Vuong (hvuong@ucsc.edu)
+David Zou (dzou@ucsc.edu)
+README - actual assignment 2 files
+
+Specify all the files used/altered and where they go.
+The following files should be in the current directory.
+They must be moved to the following locations in Minix.
+Notice that "callnr.h" and "lockcond.h" must be place
+in two separate locations.
+
+/usr/src/lib/libc/sys-minix:
+        _semaphore.c
+        lockcond.c
+        Makefile.inc
+
+/usr/src/servers/pm:
+        proto.h
+        table.c
+        semaphore.c
+        Makefile
+
+/usr/src/include/minix:
+        callnr.h
+        lockcond.h
+
+/usr/include/minix:
+        callnr.h
+        lockcond.h
+
+
+Instructions for compiling after moving files:
+  bash-$ cd /usr/src/servers/
+  bash-$ make install
+  bash-$ cd /usr/src/lib/libc
+  bash-$ make Makefile
+  bash-$ cd /usr/src/
+  bash-$ make libraries
+  bash-$ cd /usr/src/tools/
+  bash-$ make hdboot
+  bash-$ make install
+
+Assuming no errors have occurred, shutdown Minix and
+boot into the latest boot image.  Semaphores and
+locks/conditions may be used by including lib.h.
+
+The following libraries are a good idea to include to
+run semaphores, locks and conditions properly:
+  #include <lib.h>
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <errno.h>

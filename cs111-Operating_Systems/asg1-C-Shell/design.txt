@@ -1,0 +1,176 @@
+$Id: design.txt,v 1.11 2012-04-28 08:27:54-07 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+CMPS 111 Spring 2012
+Project 1
+
+
+*************************** A SIMPLE SHELL ********************************
+  while (TRUE) {                             /* repeat forever */
+      print_prompt();                        /* display prompt */
+      read_command (command, parameters);    /* input from terminal */
+      if (fork() != 0) {                     /* fork off child process, 
+                                                parent gets child pid 
+                                                returned from fork() */
+          /* PARENT CODE */
+          waitpid (-1, &status, 0);          /* wait for child to exit */
+      } else {                               /* the child gets fork() 
+                                                return of 0 */
+          /* CHILD CODE */
+          execve (command, parameters, 0);   /* execute command */
+      }
+  }
+
+
+******************************** FUNCTIONS ********************************
+- parseline(char *line, char *buffer, char **tokens)
+
+
+
+********************************* DESIGN **********************************
+
+- infinite loop, broken by exit() or maybe interrupt
+     - display the prompt
+     - read in the line with max 1024 chars
+       - errors result in printing errors and skipping the rest of the loop
+     - tokenize the line and place tokens in buffer separated by '\0'
+       - errors result in printing errors and skipping the rest of the loop
+     - a function must determine the order of commands
+       - this includes the separation of meta-characters and their 
+         resulting functions
+
+
+
+GOAL:
+    The goal of this project is to create a shell that can properly scan a
+    user command line and execute the commands in the correct and working
+    order, if possible, without crashing the shell.
+
+
+AVAILABLE RESOURCES:
+    System calls: exit(), fork(), execvp(), wait(), close(), dup(), pipe()
+    C Library: fgets(), read(), open(),
+
+DESIGN:
+        The overall design is to have the shell scan a command line from
+    left to right and run a child process for each separate command, which
+    matters when dealing with pipes. The shell will wait for the process to
+    complete and then continue with the next command unless an error
+    occurs.  The output of one command may be fed to another, so such
+    information will be maintained.
+        
+VARIABLES:
+    char cmdline[1025]
+        A buffer to store the command line inputted by the user.  1025
+        characters are used instead of 1024 to determine if the user
+        attempted to exceed 1024 characters.
+
+    char buffer[2024]
+        A buffer to store the parsed cmdline variable.  Should not exceed
+        2024 characters.
+
+    char *tokens[512]
+        An array of character pointers.  Each pointer will point to the
+        null separated tokens found in the buffer consecutively.
+
+PSEUDOCODE:
+loop:
+    print a prompt to the user
+    wait for the user to enter a line
+    break the line into tokens:
+        space separated words, meta-chars
+    give the tokens an identifying type:
+        0 for command, 1 for command argument, 2 for redirection meta-char,
+        3 for redirection argument, and 4 for pipe meta-character
+    check if the first command is to exit the shell
+    if the number of commands to be executed exceeds 20 then print error
+    for each pipe separated set of tokens:
+        determine if it contains an input redirection or output redirection
+        multiple redirections are fine as long as each has an argument
+        only the last redirection (input and output) arg will be considered
+        if this section of tokens ends in a pipe:
+            prepare to pipe this command with the following
+        input redirection takes priority over incoming pipes
+        set the current command name
+        set the argument list associated with the current command
+        fork and maintain the process id
+        if the pid is not 0
+            wait for the child to finish
+            check if there were any errors
+        if the pid is 0
+            check if there is input redirection and set it
+            check if there is output redirection and set it
+            execute the command with the argument list
+            if there is an error, print it and exit the child
+    
+FUNCTION DESIGN:
+    void print_prompt()
+        Print the prompt to stdout
+
+    void read_line (char *line)
+        Use fgets to read a line from the user and store it in a buffer.
+        Does not allow this line to exceed 1024 chars.
+
+    parseline (char *line, char *buffer, char **tokens)
+        line is a string containing the command line input from the user.
+        parseline() is to alter buffer and tokens such that buffer will
+        have all of the tokens separated by null ('\0') characters found
+        in line and tokens will be an array for character pointers pointing
+        to the beginning of each null separated token in buffer.  Tokens
+        are characters strings separated by whitespace and also any meta-
+        character (<, >, and |) not directly preceded by a backslash.  Any
+        character followed by a backslash is taken as literal, which
+        includes any whitespace character.  This means that the backslash
+        is ignored unless preceded by a backslash.  The literal then
+        follows the same rules as other characters and can either stand as
+        a string alone separated by whitespace or be part of a larger
+        string.  Backslashes or meta-characters that end a line will be
+        cause an error and the whole line to be rejected.  This function
+        will also add a preceding number before each token to declare
+        whether the string is a command (0), argument (1), meta-character
+        (2), or a redirection argument (3).
+        Pseudocode:
+           ITERATE through each char i in the line buffer until a null plug
+             whitespace
+               a following null plug is IGNORED
+               a following meta-char is IGNORED
+               a following non-whitespace BEGINS TOKEN
+                 preceded by '0' for a command
+                 preceded by a '1' for an command argument
+                 preceded by a '3' for a redirection argument
+               a following whitespace is IGNORED
+             redirection meta-char
+               a redirection meta-char is a TOKEN by itself
+                 preceded by '2'
+               a following null plug will cause a parsing ERROR
+               a following meta-char will cause a parsing ERROR
+               a following backslash BEGINS a TOKEN
+                 preceded by '3'
+               a following non-whitespace BEGINS a TOKEN
+                 preceded by '3'
+               a following whitespace is IGNORED
+             pipe meta-char
+               a pipe meta-char is a token by itself preceded by '4'
+               a following null plug will cause a parsing ERROR
+               a following pipe meta-char will cause a parsing ERROR
+               a following redirection meta-char is IGNORED
+               a following backslash BEGINS command TOKEN
+               a following non-whitespace BEGINS command TOKEN
+               a following whitespace is IGNORED
+             backslash
+               a following null plug will cause a parsing error
+               anything else following is added to current token
+               examine the next following char
+                 a null plug ENDS TOKEN
+                 a meta-char ENDS TOKEN
+                 a whitespace ENDS TOKEN
+                 anything else is IGNORED
+             words
+               added to current token
+               a following null plug ENDS TOKEN and PARSING
+               a following meta-char ENDS TOKEN
+               a following whitespace ENDS TOKEN
+               a following backslash is IGNORED
+               a following word char is IGNORED
+             null plug
+               END TOKEN and PARSING
+

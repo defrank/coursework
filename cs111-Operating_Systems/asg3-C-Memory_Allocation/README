@@ -1,0 +1,27 @@
+$Id: README,v 1.1 2012-05-18 02:13:55-07 dmfrank - $
+Derek Frank (dmfrank@ucsc.edu)
+Justin Chen (jychen@ucsc.edu)
+Benjamin Chow (bchow@ucsc.edu)
+
+CMPS 111 Spring 2012
+Project 3
+README
+
+Makefile:
+  Builds the executable as well as the static library.
+
+run.sh:
+  First builds the executable with make and then runs the tester.
+
+NOTE:
+  Be sure to move all files to /root, i.e., the home directory for root.
+  If you change directories, then change the DIR variable inside of the
+  Makefile.
+
+  Use run.sh to test.  Two methods if one does not work:
+    ./run.sh
+    bash run.sh
+  Sometimes ./run.sh will not work properly on Minix so one of these cases 
+  should work.  You should not have to modify the 'x' bit, but it is a
+  possibility.
+  

@@ -1,0 +1,431 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.1
+date	2012.06.10.07.22.58;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@/*******************************************************************************
+ * $Id: protectfile.c,v 1.1 2012-06-04 21:36:44-07 dmfrank - $
+ * Derek Frank (dmfrank@@ucsc.edu)
+ * Alexander McCaleb (amccaleb@@ucsc.edu)
+ *
+ * NAME
+ *   protectfile.c - implementation file
+ *
+ * DESCRIPTION
+ *   This program ensures the given file is encrypted or decrypted as necessary.
+ *   Uses the chmod() system call to set the sticky bit of a file that has been
+ *   encrypted.  If the file already has the sticky bit set, then it is not 
+ *   necessary to reencrypt the file.  The sticky bit wil be "turned off" while
+ *   encrypting or decrypting the file to ensure that no encryption or
+ *   decryption is done automatically by the file system.  Encryption is done
+ *   using the Rijndael (AES) cipher.
+ *
+ * SYNOPSIS
+ *   protectfile [e|d] <hexkey> <filename>
+ *
+ * OPTIONS
+ *   e          enrypt
+ *
+ *   d          decrypt
+ *
+ *   hexkey     A 64-bit key specified  as a 16 character hexadecimal number
+ *
+ *   filename   File to be encrypted/decrypted
+ *
+ * REFERENCES
+ *   This program uses the example AES file "encrypt.c" written by Ethan L.
+ *   Miller (elm@@cs.ucsc.edu) and based on code from Philip J. Erdelsky
+ *   (pje@@acm.org).
+ *
+ ******************************************************************************/
+
+// Library headers to be included
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/cdefs.h>
+#include <sys/stat.h> // stat() and chmod() system calls
+#include <sys/types.h> // stat() and chmod() system calls
+#include <fcntl.h>
+#include "rijndael.h"
+
+// Useful defines to maintain readability
+#define BASE             16
+#define NOCRYPT           0
+#define DECRYPT           1
+#define ENCRYPT           2
+#define HEXKEYLENGTH     16
+#define KEYBITS         128 // 64
+#define STICKYBIT     01000 // also S_ISVTX
+
+// globals
+char *execname = NULL; // used to allow access to argv[0] from any function
+
+
+
+/********************************** Typedefs **********************************/
+
+// A boolean typedef
+typedef enum {FALSE = 0, TRUE = 1} bool;
+
+
+
+/******************************* Helper Functions *****************************/
+
+////
+// eprintf
+//
+//   Prints an error message to stderr.
+//
+void eprintf (const char *funcname, const char *msg) {
+   fprintf (stderr, "%s: %s: %s\n", "ERROR", funcname, msg);
+}
+
+
+////
+// uprintf
+//
+//   Print usage to stderr.
+//
+void uprintf (void) {
+   fprintf (stderr, "%s: %s %s %s %s\n", "USAGE",
+            execname, "[e|d]", "<hexkey>", "<filename>");
+}
+
+
+////
+// strcmp2
+//
+//   Returns TRUE is the strings are equal, FALSE otherwise.
+//
+bool strcmp2 (char *str1, char *str2) {
+   if (strcmp (str1, str2) == 0) return TRUE;
+   return FALSE;
+}
+
+
+
+/******************************* Functions ************************************/
+
+////
+// cryption
+//
+//   Encryption and decryption use the same algorithm so they both call on this
+//   function.  Encryption/decryption is done using the rijndael (AES) code
+//   provided by Ethan L. Miller.
+//  
+//   The code for this function was written by Ethan L. Miller (elm@@cs.ucsc.edu)
+//   and modified by Derek M. Frank (dmfrank@@ucsc.edu).
+//
+int cryption (char *filename, char *hexkey, struct stat *filestat) {
+   char *funcname = "cryption()";
+   int status = EXIT_SUCCESS;
+   unsigned long rk[RKLENGTH(KEYBITS)];	/* round key */
+   unsigned char key[KEYLENGTH(KEYBITS)];/* cipher key */
+   char	buf[100];
+   int i, nbytes, nwritten , ctr;
+   int totalbytes;
+   unsigned long long k0, k1;
+   int fileId = filestat->st_ino;
+   int nrounds;				/* # of Rijndael rounds */
+   int	fd;
+   unsigned char filedata[16]; //[16];
+   unsigned char ciphertext[16]; //[16];
+   unsigned char ctrvalue[16]; //[16];
+   // zero out the buffers
+   bzero (rk, sizeof (rk)); // zero out rk[]
+   bzero (key, sizeof (key)); // zero out key[]
+   bzero (filedata, sizeof (filedata)); // zero out filedata[]
+   bzero (ciphertext, sizeof (ciphertext)); // zero out ciphertext[]
+   bzero (ctrvalue, sizeof (ctrvalue)); // zero out ctrvalue[]
+
+   // change the key from chars to an int and write it to the key buffer
+   k0 = strtoul (hexkey, NULL, BASE); // using long long to fit entire key
+   k1 = 0x0; // higher order bits are 0
+   bcopy (&k0, &(key[0]), sizeof (k0));
+   bcopy (&k1, &(key[sizeof(k0)]), sizeof (k1));
+   
+   /* Print the key, just in case */
+   for (i = 0; i < sizeof (key); ++i) {
+      sprintf (buf+2*i, "%02x", key[sizeof(key)-i-1]);
+   }
+   fprintf (stderr, "KEY: %s\n", buf);
+   
+   /*
+    * Initialize the Rijndael algorithm.  The round key is initialized by this
+    * call from the values passed in key and KEYBITS.
+    */
+   nrounds = rijndaelSetupEncrypt(rk, key, KEYBITS);
+
+   /*
+    * Open the file.
+    */
+   fd = open(filename, O_RDWR);
+   if (fd < 0)
+   {
+      fprintf(stderr, "Error opening file %s\n", filename);
+      return EXIT_FAILURE;
+   }
+
+   /* fileID goes into bytes 8-11 of the ctrvalue */
+   bcopy (&fileId, &(ctrvalue[8]), sizeof (fileId));
+
+   /* This loop reads 16 bytes from the file, XORs it with the encrypted
+      CTR value, and then writes it back to the file at the same position.
+      Note that CTR encryption is nice because the same algorithm does
+      encryption and decryption.  In other words, if you run this program
+      twice, it will first encrypt and then decrypt the file.
+   */
+   for (ctr = 0, totalbytes = 0; /* loop forever */; ++ctr)
+   {
+      /* Read 16 bytes (128 bits, the blocksize) from the file */
+      nbytes = read (fd, filedata, sizeof (filedata));
+      if (nbytes <= 0) {
+         break;
+      }
+      if (lseek (fd, totalbytes, SEEK_SET) < 0)
+      {
+         eprintf (funcname, "Unable to seek back over buffer");
+         perror ("Unable to seek back over buffer");
+         exit (-1);
+      }
+
+      /* Set up the CTR value to be encrypted */
+      bcopy (&ctr, &(ctrvalue[0]), sizeof (ctr));
+
+      /* Call the encryption routine to encrypt the CTR value */
+      rijndaelEncrypt(rk, nrounds, ctrvalue, ciphertext);
+
+      /* XOR the result into the file data */
+      for (i = 0; i < nbytes; ++i) {
+         filedata[i] ^= ciphertext[i];
+      }
+
+      /* Write the result back to the file */
+      nwritten = write(fd, filedata, nbytes);
+      if (nwritten != nbytes)
+      {
+         fprintf (stderr,
+                  "%s: error writing the file (expected %d, got %d at ctr %d\n)",
+                  execname, nbytes, nwritten, ctr);
+         break;
+      }
+
+      /* Increment the total bytes written */
+      totalbytes += nbytes;
+   }
+   close (fd);
+
+   return status;
+}
+
+
+////
+// encryptfile
+//
+//   Encrypt the file then set the sticky bit.
+//
+int encryptfile (char *filename, char *key, struct stat *filestat) {
+   assert (filename != NULL && key != NULL && filestat != NULL);
+   char *funcname = "encryptfile()";
+   int status = EXIT_SUCCESS;
+
+   // encrypt the file
+   status = cryption (filename, key, filestat);
+   if (status != EXIT_SUCCESS)
+      eprintf (funcname, "something went wrong encrypting the file");
+   
+   // set the sticky bit to 1
+//   status = chmod (filename, (filestat->st_mode | S_ISTXT)); // minix
+   status = chmod (filename, (filestat->st_mode | STICKYBIT)); // OS independent
+   // check if an error occurred with chmod()
+   if (status < 0)
+      eprintf (funcname, "something went wrong modifying the file's sticky bit");
+
+   return status;
+}
+
+
+////
+// decryptfile
+//
+//   Decrypt the file then unset the sticky bit.
+//
+int decryptfile (char *filename, char *key, struct stat *filestat) {
+   assert (filename != NULL && key != NULL && filestat != NULL);
+   char *funcname = "decryptfile()";
+   int status = EXIT_SUCCESS;
+
+   // decrypt the file
+   status = cryption (filename, key, filestat);
+   if (status != EXIT_SUCCESS)
+      eprintf (funcname, "something went wrong decrypting the file");
+   
+   // set the sticky bit to 0
+//   status = chmod (filename, (filestat->st_mode ^ S_ISTXT)); // minix
+   status = chmod (filename, (filestat->st_mode ^ STICKYBIT)); // OS independent
+   if (status < 0)
+      eprintf (funcname, "something went wrong modifying the file's sticky bit");
+   
+   return status;
+}
+
+
+////
+// scan_args
+//
+//   Scan argv.  Appropriately set an encrypt/decrypt flag, a hexadecimal key
+//   value, and a file name to take action on.  Handle errors accordingly.
+//   There must be a specified "e" or "d" flag, a 16 character key value, and
+//   a valid file name.
+//
+int scan_args (int argc, char **argv, int *cryptflag) {
+   char *funcname = "set_args()";
+
+   // There must exist exactly 4 arguments.
+   if (argc != 4) {
+      eprintf (funcname, "there must be exactly 4 arguments");
+      uprintf();
+      return EXIT_FAILURE;
+   }
+   // Set cryptflag.  Must specify either "e" or "d".
+   if (strlen (argv[1]) == 1) {
+      if (strcmp2 (argv[1], "e")) {
+         *cryptflag = ENCRYPT;
+      }else if (strcmp2 (argv[1], "d")) {
+         *cryptflag = DECRYPT;
+      }else {
+         eprintf (funcname, "must specify either \"e\" or \"d\"");
+         uprintf();
+         return EXIT_FAILURE;
+      }
+   }else {
+      eprintf (funcname, "must specify either \"e\" or \"d\"");
+      uprintf();
+      return EXIT_FAILURE;
+   }
+   // Set hexkey.  Check that it is a valid hexadecimal number.  Must be 16 or
+   // less characters.
+   int keylen = strlen (argv[2]);
+   if (keylen <= HEXKEYLENGTH) {
+      char *key = argv[2];
+      int i;
+      // all character must be valid
+      for (i = 0; i < keylen; ++i) {
+         if (!(key[i] >= '0' && key[i] <= '9') &&
+             !(key[i] >= 'A' && key[i] <= 'F') && !(key[i] >= 'a' && key[i] <= 'f')) {
+            eprintf (funcname, "not a valid hexadecimal number");
+            uprintf();
+            return EXIT_FAILURE;
+         }
+      }
+   }else {
+      eprintf (funcname, "specify a 64-bit key with a 16 character maximum hexadecimal number");
+      uprintf();
+      return EXIT_FAILURE;
+   }
+   // Verify filename.
+   char *file = argv[3];
+   struct stat *filestat = malloc (sizeof (struct stat));
+   if (stat (file, filestat) < 0) {
+      eprintf (funcname, "file does not exist, you may have to specify the file\'s path");
+      uprintf();
+      return EXIT_FAILURE;
+   }
+   // free stat
+   free (filestat);   
+   // return success
+   return EXIT_SUCCESS;
+}
+
+ 
+////
+// main
+//
+//   Scan the argument list and set the appropriate variables.  Either encrypt
+//   or decrypt the given file name using the provided key.
+//
+int main (int argc, char **argv) {
+   char *funcname = "main()"; // Function name is used handle and print errors.
+   execname = argv[0]; // The execution name of the program is stored.
+   int exitstatus = EXIT_SUCCESS; // Exit status value.
+
+   // Get and set user arguments
+   int cryptflag = NOCRYPT; // e is ENCRYPT, d is DECRYPT, other is 0;
+   char *hexkey = NULL;
+   char *filename = NULL;
+   if (scan_args (argc, argv, &cryptflag) != EXIT_SUCCESS) return EXIT_FAILURE;
+
+   // set the key
+   // pad 16 character hex key if necessary
+   // pads the front of the key with zeros if the key is less that 16 characters
+   int keylen = strlen (argv[2]); // length of the key
+   if (keylen == HEXKEYLENGTH) hexkey = argv[2];
+   else {
+      hexkey = malloc (HEXKEYLENGTH);
+      int i;
+      int j = keylen - 1;
+      for (i = HEXKEYLENGTH - 1; i >= 0; --i) {
+         if (j >= 0) {
+            hexkey[i] = argv[2][j];
+            --j;
+         }else hexkey[i] = '0';
+      }
+   }
+   // set file name
+   filename = argv[3];
+
+   // set up stat for file
+   struct stat *filestat = malloc (sizeof (struct stat));
+   if (stat (filename, filestat) < 0) {
+      eprintf (funcname, "Could not stat the file");
+      return EXIT_FAILURE;
+   }
+   // determine what to do based on sticky bit and "e" or "d" flag
+   switch (cryptflag) {
+      case (ENCRYPT):
+         // only encrypt if the sticky bit has not previously been set
+         if ((filestat->st_mode & S_ISVTX) ? FALSE : TRUE)
+//         if ((filestat->st_mode & STICKYBIT) ? FALSE : TRUE)
+            exitstatus = encryptfile (filename, hexkey, filestat);
+         break;
+      case (DECRYPT):
+         // only decrypt if the sticky bit has previously been set
+         if (filestat->st_mode & S_ISVTX)
+//         if (filestat->st_mode & STICKYBIT)
+            exitstatus = decryptfile (filename, hexkey, filestat);
+         break;
+      default:
+         // did not specify "e" or "d" flag
+         eprintf (funcname, "encrypt or decrypt?");
+         exitstatus = EXIT_FAILURE;
+         break;
+   }
+   // free variables
+   free (filestat);
+   if (keylen != HEXKEYLENGTH) free (hexkey);
+   
+   // return with exit status
+   return exitstatus;
+}
+@

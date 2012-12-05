@@ -1,0 +1,20 @@
+$Id: README,v 1.1 2012-05-12 18:06:03-07 dmfrank - $
+Derek Frank (dmfrank@ucsc.edu)
+Harrison Vuong (hvuong@ucsc.edu)
+David Zou (dzou@ucsc.edu)
+README - readers/writers synchronization problem
+
+NOTES:
+  This directory should include both a Makefile to build
+  the executables and a run.sh script to test the files.
+  Note that freeing things should be done separately
+  after running the script to allow the processes to
+  finish with the semaphores.  
+
+Note: Be sure run.sh is executable.  Should be, but sometimes
+      transferring files changes that bit.
+
+USAGE:
+  bash-$ make
+  bash-$ ./run.sh
+  bash-$ ./freerw

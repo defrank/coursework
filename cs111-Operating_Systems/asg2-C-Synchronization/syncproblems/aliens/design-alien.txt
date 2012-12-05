@@ -1,0 +1,115 @@
+$Id: alien-design.txt,v 1.1 2012-05-12 18:06:03-07 dmfrank - $
+Derek Frank (dmfrank@ucsc.edu)
+Harrison Vuong (hvuong@ucsc.edu)
+David Zou (dzou@ucsc.edu)
+design document for aliens synchronization problem
+
+GOAL:
+   To assure that all three genders will wait to reproduce until there
+   exists a combination of three different genders.  At most two
+   reproductions may occur simultaneously.
+
+AVAILABLE RESOURCES:
+   semaphores - described in detail in other design doc
+
+DESIGN:
+   The primary idea behind the design was to implement a set of barriers.
+   All genders rely on their mates, but the third mate is most important
+   since it determines the length of their raising of the offspring.  The
+   following implementation should allow for our goal to be satisfied,
+   although the waiting time taken to raise the offspring is short
+   compared to the time it takes for another group to begin to reproduce.
+      
+   Shared Semaphores:
+      line 1 (1)
+      line 2 (1)
+      line 3 (1)
+      mutex (1)
+      depends (0)
+      reproducing (2)
+      raising (0)
+      group (3)
+
+   Shared Variables:
+      int gathered = 0
+
+   Gender One: pseudocode
+      while (user specified number of reproductions)
+         wait random time
+         down on line 1 semaphore
+         down on group semaphore
+         down on mutex semaphore
+         gathered += 1
+         if (gathered == 0)
+            gathered = 0
+            down on reproducing semaphore
+            up on depends semaphore
+            up on depends semaphore
+            up on depends semaphore
+         up on mutex semaphore
+         down on depends semaphore
+         up on group semaphore
+         down on raising semaphore
+
+   Gender Two: pseudocode
+      while (user specified number of reproductions)
+         wait random time
+         down on line 2 semaphore
+         down on group semaphore
+         down on mutex semaphore
+         gathered += 1
+         if (gathered == 0)
+            gathered = 0
+            down on reproducing semaphore
+            up on depends semaphore
+            up on depends semaphore
+            up on depends semaphore
+         up on mutex semaphore
+         down on depends semaphore
+         up on group semaphore
+         down on raising semaphore
+            
+   Gender Three: pseudocode
+      while (user specified number of reproductions)
+         wait random time
+         down on line 3 semaphore
+         down on group semaphore
+         down on mutex semaphore
+         gathered += 1
+         if (gathered == 0)
+            gathered = 0
+            down on reproducing semaphore
+            up on depends semaphore
+            up on depends semaphore
+            up on depends semaphore
+         up on mutex semaphore
+         down on depends semaphore
+         up on line 1 semaphore
+         up on line 2 semaphore
+         up on line 3 semaphore
+         up on group semaphore
+         wait random time
+         up on raising semaphore
+         up on raising semaphore
+         up on reproducing semaphore
+         down on raising semaphore
+            
+TESTING:
+   It is necessary to specify the number of times an alien will reproduce.  In
+   fact, these numbers should be equivalent in order to prevent sleeping
+   processes from tying up a semaphore.  If a process is sleeping on a semaphore
+   process list, then that semaphore cannot be deallocated.  So testing any
+   single alien should never reproduce.  Any two should also not reproduce.
+   When three different genders are waiting, then it is possible for a group
+   of three to mate.  It is necessary to check that this condition is always
+   satisfied.  There should never be more than two groups of three different
+   genders reproducing and raising an offspring.  Printing the current status
+   of an alien allows us to know what is going on.
+
+      Example:
+         bash-$ ./initaliens
+         bash-$ ./alien 4 1 100 &
+         bash-$ ./alien 5 2 100 &
+         bash-$ ./alien 6 3 100 &
+         bash-$ ./freealiens
+

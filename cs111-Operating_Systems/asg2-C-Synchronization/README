@@ -1,0 +1,255 @@
+$Id: README,v 1.1 2012-05-12 20:38:09-07 dmfrank - $
+README for Project #2: Synchronization
+Class: CMPS 111 (Operating Systems) - Miller
+Names: David S. Zou, Harrison Vuong, Derek M. Frank
+
+TL;DR VERSION OF FILE LOCATIONS:
+
+/usr/src/lib/libc/sys-minix:
+        _semaphore.c
+        lockcond.c
+        Makefile.inc
+
+/usr/src/servers/pm:
+        proto.h
+        table.c
+        semaphore.c
+        Makefile
+
+/usr/src/include/minix:
+        callnr.h
+        lockcond.h
+
+/usr/include/minix:
+        callnr.h
+        lockcond.h
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SEMAPHORES:
+
+FILES:
+
+To be able to use semaphores in the MINIX microkernel, you must 
+create/modify the following files:
+
+_semaphore.c: Located in the /usr/src/lib/libc/sys-minix directory.
+              Makes the system call handlers for the semaphore methods.
+
+semaphore.c: Located in the /usr/src/servers/pm directory. Contains
+              the actual functionality for the semaphore methods. 
+
+Makefile.inc: Located in the /usr/src/lib/libc/sys-minix directory.
+              Used to compile the libraries for the system calls.
+
+Makefile: Located in the /usr/src/servers/pm directory. Used to compile
+          the files in the process manager directory.
+
+callnr.h: Located in the /usr/include/minix and /usr/src/include/minix
+          directory.  Used to define the call number for the system calls.
+
+table.c:  Located in the /usr/src/servers/pm directory.  Used to map
+          the system calls to the semaphore methods.
+
+proto.h:  Located in the /usr/src/servers/pm directory.  Works like an
+          implementation file for the semaphore methods.
+
+SYNOPSIS:  Semaphores are implemented in this microkernel to be able to
+           prevent racing conditions of resources between processes and
+           process synchronization for interprocess communication.
+
+INSTRUCTIONS: First of all, in order to add system calls you should
+              to change callnr.h first to find call numbers that are 
+              available to you (overlapping an existing call number used
+              by any kernel service will break the system!). You may 
+              replace a call number that is not used by any kernel services
+              (marked as no_sys and not #defined in both callnr.h) and 
+              define it as your own.  For example, if call number 44 is not
+              defined in either callnr.h's, you may add in 
+              '#define SEMINIT 44' in both files to define the user-
+              created system call 'SEMINIT' with a call number.
+              Next, modify table.c so that the position number(s) of the
+              table entry matches the call number for the system call(s)
+              as defined in callnr.h.  For example, if you want to add the
+              system call SEMINIT (assuming you already defined a call 
+              number for it like described above), you can do so by going
+              to the correct position of the table and add in an entry for
+              'do_seminit' to the 44th entry position in the table (the
+              names for these entries will be used for your semaphore.c
+              system call methods in /usr/src/servers/pm).  
+              Next, modify proto.h to include the prototype methods for
+              implementating your system call methods. For example, 
+              when adding 'do_seminit', you add in 
+              '_PROTOTYPE( int do_seminit, (void) );', where the
+              arguments you pass into this method is defined inside the 
+              second pair of parentheses after the comma, in this case
+              is none (void). Next, you define your system call
+              handlers inside '_semaphore.c'.  For
+              example, you may add a system call called 'seminit'
+              and make it return '(_syscall (PM_PROC_NR, SEMINIT, &m))',
+              where the first parameter is the recipient process,
+              the second parameter being the call number of your system
+              call (which was defined in both callnr.h's), and the third
+              parameter being the messages you want to pass in as the
+              argument for your system call.  To make use of the messages
+              you have to refer to the message structure that is already
+              defined in 'lib.h'.  Also, make sure that both 'lib.h' and
+              'callnr.h' are included in this file in order to use your
+              messages and defined call numbers respectively.  Your last
+              modifications to implement semaphores would be to add in
+              your system call methods inside 'semaphore.c'.  Make sure
+              to include the following header files for your system calls
+              to work:
+
+              #include "pm.h"
+              #include "param.h"
+              #include "glo.h"
+              #include "mproc.h"
+              #include <sys/wait.h>
+              #include <assert.h>
+              #include <signal.h>
+              #include <stdio.h>
+              #include <stdlib.h>
+              #include <string.h>
+
+              Once the above files have been added/modified, call the
+              'make install' command in /usr/src/servers/ to recompile
+              the process manager servers.  Afterwards, to compile the
+              modified system call library, call the 'make libraries'
+              command in /usr/src/.  Finally, call 'make hdboot' and then
+              'make install' in /etc/src/tools to create the boot-image of
+              the kernel and then reboot to the new boot-image.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+LOCK/CONDITION VARIABLES:
+
+FILES:
+
+To be able to use locks and condition variables in the MINIX microkernel,
+you must create/modify the semaphore files above as well as the following
+files:
+
+lockcond.c: Located in the /usr/src/lib/libc/sys-minix directory. Contains
+            the methods for the locks and condtion variables.
+
+lockcond.h: Located in /usr/src/include/minix and /usr/include/minix 
+            directory.  The implementation header file that is used by
+            lockcond.c.
+
+Makefile.inc: Located in the /usr/src/lib/libc/sys-minix directory.
+              Used to compile the libraries for the system calls.
+
+SYNOPSIS:   This is the general implementation of locks and condition 
+            variables made by semaphores for the user-level library.  
+            By using locks and condition variables, there can be mutual 
+            exclusion of resources between different processes/threads, 
+            which may be within the critical region.  Condition variables 
+            may be used to avoid having a process to busy wait 
+            while it is waiting for a resource to become available.
+
+INSTRUCTIONS: To compile the implementation of the locks and condition 
+              variables, you must add the files inside Makefile.inc and 
+              calling the 'make libraries' command in the /etc/src/ 
+              directory to recompile the entire library.  Afterwards, you
+              run 'make hdboot' and then 'make install' to rebuild
+              the boot-image and reboot to the new boot-image.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+READER/WRITER PROBLEM:
+
+FILES:
+
+This reader/writer program uses the semaphore methods contained in the
+files in the SEMAPHORES section of this README. The reader/writer exercise
+program consists of four separate C files:
+
+rwinit.c: Initializes the semaphores used for this problem. 
+
+reader.c: Contains methods that simulate the 'readers' for this problem.
+
+writer.c: Contains methods that simulate the 'writers' for this problem.  
+
+rwfree.c: Frees the semaphores used for this problem.  
+
+Last but not least, the shell script run.sh is used as a test file used 
+to simulate a reader/writer scenario by running reader and writer processes
+simultaneously in the background.
+
+All of these files are located in the 'readwritesync' directory, which
+can be placed anywhere as long as all the files above are inside the 
+folder.
+
+
+SYNOPSIS:
+
+The problem with the reader/writer exercise was that the
+writer had the potential to wait forever if readers were able to
+constantly go into the critical region faster than the writer(s) could,
+causing the writer to starve.
+
+Our solution was to add an extra semaphore into the code, which gives
+priority to whoever comes in first, instead of giving priority to just
+the readers. An example is that if a reader goes into the critical region
+before the writer when the writer tried to access the critical region,
+the writer still has a chance to access it immediately after that reader
+leaves the critical region even if there are readers still coming in.
+Both reader and writer also wait for a random amount of time before each
+state (such as going into the critical region).
+
+INSTRUCTIONS: To compile all the programs, just run 'gmake all' in the 
+              project directory containing all the files for this problem.
+              (basically the directory where you unarchived the files to)
+              To run the program, you may use the test file (run.sh) that
+              we created in the same directory by typing in the 
+              'sh run.sh' command into the shell. Otherwise, use the 
+              commands below inside the directory where the executables
+              are located.
+
+SYNTAX OF COMMANDS:
+
+Initialization of semaphores:     ./initializing
+Reader:                           ./reader <unique number id of a reader>
+Writer:                           ./writer <unique number id of a writer>
+Freeing of semaphores:            ./freeing
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ALIEN WORLD PROBLEM:
+
+FILES:
+
+This alien world problem simulation consists of three C files:
+
+alien.c:      The program that simulates the reproduction process of the
+              aliens.
+
+initaliens.c: Initializes the shared variables and semaphores for the alien
+              world problem.
+
+freealiens.c: Frees the semaphores for the alien world problem.
+
+All of these files are located in the 'alienworldsync' directory, which
+can be placed anywhere as long as all the files above are inside the 
+folder.
+
+SYNOPSIS:   This exercise was mainly to make use of barriers and semaphores
+            in order to simulate the stable reproduction process of aliens.
+            In a world where the gender of an alien may be chosen randomly,
+            aliens must meet with 3 different types of gender of their kind
+            first in order to reproduce.
+
+INSTRUCTIONS:  To compile all the programs, just run 'gmake all' in the 
+               project directory containing all the files for this 
+               exercise (where you uncompressed the files).  To run the
+               programs, you must use the commands listed below within the
+               directory where the executables are located.
+
+SYNTAX OF COMMANDS:
+
+Initialization of semaphores: ./initaliens
+(and shared variables)
+Main program:                 ./alien <gender number id (can be from 1-3)>
+                                          <amount of babies desired>
+Freeing of semaphores:        ./freealiens

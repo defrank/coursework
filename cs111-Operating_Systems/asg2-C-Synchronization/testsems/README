@@ -1,0 +1,19 @@
+$Id: README,v 1.1 2012-05-12 18:06:03-07 dmfrank - $
+Derek Frank (dmfrank@ucsc.edu)
+Harrison Vuong (hvuong@ucsc.edu)
+David Zou (dzou@ucsc.edu)
+README - semaphore testing
+
+NOTES:
+  This directory contains a Makefile to build all the files on Minix3.
+  Also, there is a run.sh script for testing the files.  When testing
+  a kernel chosen sem id by passing 0 to seminit, one must manually free
+  or test, since the sem id is not known.  The value is printed to stdout
+  so that it may be known and passed manually.
+
+Note: Be sure run.sh is executable.  Should be, but sometimes
+      transferring files changes that bit.
+
+USAGE:
+  bash-$ make
+  bash-$ ./run.sh
