@@ -1,0 +1,21 @@
+#!/bin/sh
+# $Id: mk.tests,v 1.1 2011/10/14 04:16:28 dmfrank - $
+PATH=$PATH:/afs/cats.ucsc.edu/courses/cmps012b-wm/bin
+export PATH
+RUN=runprogram.perl
+PROG=oc
+
+OCDIR=/afs/cats.ucsc.edu/courses/cmps104a-wm/Assignments/oc-programs
+cp $OCDIR/*.oh $OCDIR/*.oc .
+
+for ocfile in *.oc nosuch.oc
+do
+   $RUN -o$ocfile.test $PROG $ocfile
+done
+
+if [ -f 11-numbers.tok ]
+then
+   # Proj 2 ignores but does not complain about the -y flag.
+   # Proj 3, but not proj 2, outputs yyparse trace as well.
+   $PROG -ly 11-numbers.oc 2>11-numbers.lexyacctrace
+fi

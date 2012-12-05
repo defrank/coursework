@@ -1,0 +1,86 @@
+$Id: README,v 1.7 2011-11-07 23:49:22-08 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+Assignment 2
+
+    This asignment includes:
+        README
+        Makefile
+        main.c
+        scanner.l
+        parser.y
+        lyutils.c
+        lyutils.h
+        astree.c
+        astree.rep.h
+        astree.h
+        stringtable.c
+        stringtable.h
+        auxlib.c
+        auxlib.h
+
+************************************************************************
+
+    Miscellaneous:
+        Although Mackey did not specify to dump the astree to
+            "program.ast" with removal of the prefix "TOK_", he did
+            suggest it and so I have removed that prefix to follow the
+            output style he presented us in out specifications. 
+
+    Makefile:
+        Note that the ci command is altered based on the user.
+
+    main.c:
+        Partially written by Wesley Mackey as many functions were taken
+            or altered from both his Examples/e08-expr-smc/main.c and
+            Assignments/cppstrtok/cppstrtok.c files.
+        Code for remove_ext() was attained from:
+            http://stackoverflow.com/questions/2736753/how-to-remove-
+            extension-from-file-name
+
+    scanner.l:
+        Partially written by Wesley Mackey.  Taken from 
+            Examples/e08.expr-smc.
+
+    parser.y:
+        Partially written by Wesley Mackey.  Taken from 
+            Assignments/misc-code and Examples/e08.expr-smc.
+        Some actions are long for necessary reasons such as changing
+            symbols, freeing astrees, creating new astrees for function
+            and prototype, and just adopting astrees.
+        I have created functions in "lyutils.c", new_funcnode() and 
+            new_protonode(), that will create astrees for a function
+            token and a prototype token.  These functions take one
+            parameter that is an astree so that the astree created
+            can use the astree's file number, line number, and offset.
+
+    lyutils.c:
+        Partially written by Wesley Mackey.  Taken from
+            Examples/e08.expr-smc.
+
+    lyutils.h:
+        Partially written by Wesley Mackey.  Taken from
+            Examples/e08.expr-smc.
+
+    astree.c
+        Mostly written by Wesley Mackey.  Taken from
+            Examples/e08.expr-smc.
+
+    astree.rep.h
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+
+    astree.h
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+
+    stringtable.c:
+        The hashing function strhash() was taken from Wesley Mackey's
+            file strhash.c in Examples/e08.expr-smc.
+
+    stringtable.h:
+        Written by Wesley Mackey as taken from the assignment
+            specifications.
+
+    auxlib.c:
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+
+    auxlib.h:
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.

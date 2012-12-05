@@ -1,0 +1,15 @@
+#!/bin/sh
+# $Id: mk.tests,v 1.4 2011-10-04 14:06:05-07 - - $
+PATH=$PATH:/afs/cats.ucsc.edu/courses/cmps012b-wm/bin
+export PATH
+RUN=runprogram.perl
+PROG=oc
+
+OCDIR=/afs/cats.ucsc.edu/courses/cmps104a-wm/Assignments/oc-programs
+cp $OCDIR/*.oh $OCDIR/*.oc .
+
+for ocfile in *.oc nosuch.oc
+do
+   $RUN -o$ocfile.test $PROG $ocfile
+done
+

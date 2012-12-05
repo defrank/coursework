@@ -12,6 +12,10 @@ Directories:
   |  |- asg3-Java-Sparse_Matrix_ADT
   |  |- asg4-C-BFS_and_Shortest_Paths_in_Graphs
   |  |- asg5-C-DFS-and_Strong_Components_of_Graphs
+  |- cs104a-Fundamental_Compiler_Design_I
+  |  |- asg1-C-Stringtable_ADT
+  |  |- asg2-C-
+  |  |- asg3-C-
   |- cs109-Advanced_Programming
   |  |- asg1-C++-Shell_and_Function_Pointers
   |  |- asg2-C++-DC_and_Bigint_Class
@@ -20,7 +24,6 @@ Directories:
   |  |- asg5-Java-Dining_Philosophers
   |- cs112-Comparative_Programming_Languages
   |  |- asg2-Scheme-Silly_Basic_Interpreter
-  |  |- asg3-OCaml-
-  |  |- asg4-Smalltalk-
-  |  |- asg5-Prolog-
+  |  |- asg3-OCaml-DC
+  |  |- asg5-Prolog-Airline
  

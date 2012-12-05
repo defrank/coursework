@@ -1,0 +1,84 @@
+$Id: README,v 1.5 2011-10-22 23:15:54-07 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+Assignment 2
+
+    This asignment includes:
+        README
+        Makefile
+        main.c
+        scanner.l
+        parser.y
+        lyutils.c
+        lyutils.h
+        astree.c
+        astree.rep.h
+        astree.h
+        stringtable.c
+        stringtable.h
+        auxlib.c
+        auxlib.h
+
+************************************************************************
+
+    Makefile:
+        Note that the ci command is altered based on the user.
+
+    main.c:
+        Partially written by Wesley Mackey as many functions were taken
+            or altered from both his Examples/e08-expr-smc/main.c and
+            Assignments/cppstrtok/cppstrtok.c files.
+        Code for remove_ext() was attained from:
+            http://stackoverflow.com/questions/2736753/how-to-remove-
+            extension-from-file-name
+        Note that if there is no file specified that an error is thrown,
+            since CPP will simply read from stdin.
+        It is important to note that I have designed the compiler so
+            that if the CPP pipe, yyin, closes with an error then the
+            "program.str" file will not be created, such as when 
+            "nosuch.oc" is used; however, since yylex() must be run
+            while the pipe to yyin is still open, it was not possible to
+            keep it from opening given a failed pipe.  It is just
+            necessary to note that I have chosen not to create such 
+            files when such a crucial error occurs. 
+
+    scanner.l:
+        Partially written by Wesley Mackey.  Taken from 
+            Examples/e08.expr-smc.
+
+    parser.y:
+        Written by Wesley Mackey.  Taken from Assignments/misc-code.
+
+    lyutils.c:
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+
+    lyutils.h:
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+        Contains two extra extern variables of type char* and FILE*:
+            basenamefile: type char* that holds to the stripped name of
+                the given "directory/program.oc" so that it simply holds
+                "program".
+            tokfile: type FILE* since it is opened in lyutils.c and
+                closed in main.c.
+
+    astree.c
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+
+    astree.rep.h
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+
+    astree.h
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+
+    stringtable.c:
+        The hashing function strhash() was taken from Wesley Mackey's
+            file strhash.c in Examples/e08.expr-smc.
+
+    stringtable.h:
+        Written by Wesley Mackey as taken from the assignment
+            specifications.
+
+    auxlib.c:
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
+
+    auxlib.h:
+        Written by Wesley Mackey.  Taken from Examples/e08.expr-smc.
