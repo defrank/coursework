@@ -1,0 +1,28 @@
+$Id: README,v 1.1 2011-05-26 15:20:58-07 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+Assignment 5: asg5-prolog-airline
+
+   This assignment contains:
+      README
+      functions.pl
+
+***********************************************************************
+
+   functions.pl: 
+                - In a few of the tests I am uncertain if it is
+                expected in the output to display errors.  In
+                particular, group.tests 1 and 2.  I checked
+                myself and verified that given the rules that no
+                flight can end after 24:00 and that there must be a
+                30 minute transfer period between flights give reason
+                to the errors printed with those tests.  It may also
+                be the case that there is simply no path available.
+
+                - It also says in the SCORE file that group3.tests
+                should complain about zero-fly queries.  This seems
+                that we should complain that a successful fly query
+                was not achieved, however, I am assuming that it is
+                sufficient enough to simply complain that the 
+                departure and the destination are one in the same.
+                Complaining about zero-fly queries does not make
+                much sense to me for this.

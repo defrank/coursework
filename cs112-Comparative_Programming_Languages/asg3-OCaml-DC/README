@@ -1,0 +1,30 @@
+$Id: $
+Derek Frank, dmfrank@ucsc.edu
+Assignment 3: asg3-ocaml-dc
+
+   This assignment contains:
+      README
+      Makefile
+      bigint.ml
+      bigint.mli
+      maindc.ml
+      scanner.mll
+
+***********************************************************************
+
+   Makefile: partially written by Wesley Mackey
+             Includes my own ci command called "cil" that is only called
+             for my user names dmfrank, derekmfrank, and fain.
+             Otherwise, Mackey's "cid" command is called.
+
+   bigint.ml: partially by Wesley Mackey
+              There are two attempts at creating the mul function, but I
+              found it too difficult to complete in time so they are 
+              commented out.
+
+   bigint.mli: written by Wesley Mackey
+
+   maindc.ml: written by Wesley Mackey
+
+   scanner.mll: written by Wesley Mackey
+

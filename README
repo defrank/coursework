@@ -18,10 +18,9 @@ Directories:
   |  |- asg3-C++-Draw_and_Inheritance
   |  |- asg4-C++-Listmap_Templates
   |  |- asg5-Java-Dining_Philosophers
-  |- cs104a-Fundamental_Compiler_Design_I
-  |  |- asg1-
-  |  |- asg2-
-  |  |- asg3-
-  |  |- asg4-
-  |  |- asg5-
+  |- cs112-Comparative_Programming_Languages
+  |  |- asg2-Scheme-Silly_Basic_Interpreter
+  |  |- asg3-OCaml-
+  |  |- asg4-Smalltalk-
+  |  |- asg5-Prolog-
  

@@ -1,0 +1,74 @@
+gnroff-1.18.1.1 -mgm -Tlatin1 asg5-prolog-airline.qrf           page 1
+2011-05-19
+
+asg5-prolog-airline.mm:24: warning: can't find font `C'
+
+.EQ
+delim $$
+.EN
+
+1.  Logic Programming in Prolog
+
+You are to write an airline reservation system for Twilight Zone
+Airlines.  Given a request to travel from one city to another, print
+out a flight schedule.  For each leg of the trip, print out departure
+airport, departure city, and departure time, and the same information
+for arrival.  Example:
+
+?-   fly (lax, sea).
+     depart  lax  Los Angeles      14:22
+     arrive  sfo  San Francisco    15:29
+     depart  sfo  San Francisco    16:02
+     arrive  sea  Seattle-Tacoma   17:42
+yes
+
+A database has been provided which list some airports, their cities,
+and the latitudes and longitudes of the airports.  A flight schedule
+has also been provided showing departure airport, arrival airport, and
+departure time in hours and minutes.
+
+In response to a query, if there is more than one flight plan that
+might be scheduled, the one with the shortest time from initial
+departure to final arrival time must be chosen.
+
+2.  Twilight Zone Logic
+
+The point of this assignment is coding in Prolog, so you may make some
+strange simplifications.
+
+ (a) All latitudes are North, all longitudes are West, and the earth
+     is flat.  Thus, rather than spherical trigonometry, you can use
+     the theorem of o Pythagoras o Samios [http://en.wikipedia.org/
+     wiki/Pythagoras] to compute distances.  One degree at the equator
+     is 69 miles.  On a flat earth, this is universal.
+
+ (b) Flight durations, departures and arrivals are kept in Twilight
+     Zone Standard Time (TZST).  That means you don't deal with PST,
+     PDT, EST, EDT, etc.
+
+ (c) Planes fly at a constant speed of 500 miles per hour and always
+     in straight lines, even through mountains if necessary, so the
+     arrival time can always be computed from the departure time and
+     the distance travelled.
+
+ (d) Since this is the Twilight Zone, planes always depart and arrive
+     on time.  Passengers never get bumped nor are planes ever full.
+     A flight transfer connection always takes 30 minutes, so during a
+     transfer at a hub, the departure of a connecting flight must be
+     at least 30 minutes later than the arrival of the incoming flight
+     in order for the itinerary to be valid.
+
+ (e) There are no overnight trips:  all flights must depart from the
+     original destination and arrive at the final destination within
+     the same day.
+
+3.  What to Submit
+
+Submit one file:  functions.pl with the usual name and partner
+information in comments.
+
+The grader will copy in the files database.pl and group*.tests.
+Testing will be done with the command
+   gprolog <group0.tests 2>&1 | tee group0.output
+followed by testing the other groups.
+

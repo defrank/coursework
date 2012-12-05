@@ -1,0 +1,6 @@
+write( '$Id: group3.tests,v 1.1 2012-12-04 22:20:42-08 - - $' ), nl.
+
+[database].
+[functions].
+fly(sjc,sjc).
+fly(dfw,dfw).
