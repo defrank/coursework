@@ -1,0 +1,92 @@
+Rock-Paper-Scissors Safari Specifications
+
+
+3.1 P3
+Rules for P3:
+
+1.   Due: Tuesday March 6   (70 pts. for compiling, 0-35 points for your rank versus other agents).  Out of 100 pts.
+
+                                          (P2 agents will be included, your score will be based on whichever of your P2  or P3 agents does better).
+
+
+         CMPS240 (in addition to above:)
+
+                        Report on how your P2 agent performed in the actual tournament. Update your paper to include
+
+your P3 agent's design, strategy and expected performance.   (70 pts.).
+
+
+2.   All the rules are the same as P2 except:
+    a. You may use 3 semi-local variables:
+
+          These may be lists provided that the original program code is not more than 150 lines
+
+     and each semi-local variable does not grow to more than 150 lines.
+    b. Up to 150 80-character lines of code
+    c. Up to 4 seconds per move.
+    d. Each round, the total past return of the play (R,P, or S) you make, times the sign of your bet size
+
+       will be subtracted from your score.
+         (if negative, subtracting will produce a bonus :) for playing it!).
+
+         For example, suppose the total return of P  (the second entry) is 4.
+         Suppose you bet (7 P) and there are 4 net rocks and 6 net scissors
+         then your return is 7*[sign(4-6)]  -1*4 = -11
+   
+ and the total  return of P will be then updated at the end of the round using -1)...
+
+net = bet * sign(victims(x)-killers(x)) - sign(bet) * *total-returns*(x).
+
+
+
+2.1 -- 2/9/2012
+Each agent starts with 1 point. There are 1000 rounds per tournament.
+
+Each agent receives 3 inputs
+
+  h - a list of lists(one per round) of net rock, paper, and scissors played in that round. where the rounds are ordered most recent to oldest.
+
+ex: (after two rounds: ((1 7 1) (2 3 -3)))
+ s - a list giving the total score for each agent
+
+ex: if there are 7 agents the list starts out as (1 1 1 1 1 1 1)
+The current agent's  total points.    ex: 1  at first.
+A legal play must be a list of an integer bid followed by R, P or S.
+If the agent has n (more than 0) points, he may bid -n,.....,-1,1,....,n (note that 0 is omitted  and we WILL NOT allow nil) else (n<=0) he/she must bid -1 or 1.
+For example, on the first move   (-3 R) is a legal play.
+A player's net on each round = bid*sign(#victims-#killers) where sign is either -1 if #victims-#killers < 0, 0 if #victims-killers==0 and 1 if #victims-killers>0. The net is added to the player's total for the next round. (R has victims S and killers P, e.g.) This means you can lose as much as you bet each round, depending on the total outcome.
+Players are ranked by their total points after 1000 rounds.
+Agents are limited to 800 ASCII charcaters and .002 seconds per move.
+P2 continued:
+
+Player's score will be based on their average rank after 1000 tournaments.
+
+[specifically, in P2, if your agent plays legally you will get 70 + YourRank/2].
+
+For P2, you will be expected to do the following to the monitor provided below: (50 pts total)
+
+Add to the legalp function. There are cases not handled. (15)
+Write a 1-2 line comment explaining what each defun function does. (20)
+Create a global list *avg-returns* that contains the average return of (1 R), (1 P), (1 S) and each agent from the beginning of the game. (15). For example, if there are 4 agents, *avg-returns* will be a list of length 7  of numbers,   with the first 3 slots for R, P and S returns respectively followed by the 4 agent returns.
+This global list will be used in P3. However, you may also access it in P2 (but may access no other globals).
+
+        If in CMPS140, your total score will be out of 150 points.
+
+        If In CMPS240, you must also (60 pts):
+
+              4. Write a 1-2 page paper describing the game, your strategy, and why and
+
+                  how you expect your agent to perform. Use of figures or diagrams is highly desirable.
+
+                  [Your paper will be further expanded for P3 and P4.].
+
+You will be submitting two files:
+
+agent.lisp: your agent, which contains only your agent lisp function (agent program). You may give your agent a one character name, or name it "agent." 
+monitor.lisp: the revised monitor file. The revised monitor file should contain the "fixed" legalp function, which may involve changing how that function is called. It will also contain the additional code such that the *global-list* variable, after running monitor, contains the average returns as described above (3). You may modify any function or add additional functions to the file to accomplish this.
+
+To test your agent, you can load your agent file, then load the monitor file, and then run the monitor the usual way from the interpreter: (monitor '(simple-agent agent random-agent) 1000), where 1000 is the number of times to run tournaments and agent is the name of the function.
+
+Any other questions, feel free to email me or see me during section. The latest submission instructions will be posted to the course website,   http://courses.soe.ucsc.edu/courses/cmps140/Winter12/01
+
+NOTE: To compile the monitor and agents, execute the sbcl command (compile-file "monitor-given.lisp") and then (load "monitor-given.fasl").

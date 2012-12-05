@@ -1,0 +1,11 @@
+Derek Frank, dmfrank@ucsc.edu
+CS 140 Winter 2012
+Program 3
+
+Submitting two agent files.  One is formatted and readable, while the other
+is completely the opposite.  Both files run on a Linux-x64 machine.  The
+non-formatted version exceeds 150 lines a bit, but is consistent with the
+ideal of how many characters could fit in 150 lines by 80 characters.
+
+150 * 80 = 12000
+character count of dmfrank-p3.lisp: 11919

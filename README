@@ -27,9 +27,9 @@ Directories:
   |  |- asg3-OCaml-DC
   |  |- asg5-Prolog-Airline
   |- cs140-Artificial_Intelligence
-  |  |- asg1-Lisp-
-  |  |- asg2-Lisp-
-  |  |- asg3-Lisp-
-  |  |- asg4-Lisp-
+  |  |- asg1-Lisp-RPS_Safari_Agent
+  |  |- asg2-Lisp-RPS_Safari_Agent
+  |  |- asg3-Lisp-RPS_Safari_Agent
+  |  |- asg4-Lisp-RPS_Safari_Agent
   |- ce150-Computer_Networks
   |  |- project-C-Client_Server_Voting
