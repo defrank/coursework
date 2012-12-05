@@ -1,0 +1,102 @@
+%!PS-Adobe-3.0
+%%Creator: draw
+%%CreationDate: Mon Feb 14 23:59:23 PST 2011
+%%PageOrder: Ascend
+%%Orientation: Portrait
+%%SourceFile: polygons.dr
+%%EndComments
+
+%%Page: 1 1
+18 18 translate
+/Courier findfont 10 scalefont setfont
+0 0 moveto
+(polygons.dr:1) show
+
+%%Command[1]: # $Id: polygons.dr,v 1.1 2011-01-25 18:51:48-08 - - $
+
+%%Command[2]: define pq polygon 1 0 0 1 2 2 -2 -4
+
+%%Command[3]: draw pq 1 1
+gsave
+   newpath
+   72 72 translate
+   0 rotate
+   0 0 moveto
+   72 0 rlineto
+   0 72 rlineto
+   144 144 rlineto
+   -144 -288 rlineto
+   closepath
+   2.10552e-317 setlinewidth
+   stroke
+grestore
+
+%%Command[4]: define octagon polygon -.7 .7 0 1 .7 .7 1 0 .7 -.7 0 -1 -.7 -.7 8
+
+%%Command[5]: draw octagon 4 4
+gsave
+   newpath
+   288 288 translate
+   0 rotate
+   0 0 moveto
+   -50.4 50.4 rlineto
+   0 72 rlineto
+   50.4 50.4 rlineto
+   72 0 rlineto
+   50.4 -50.4 rlineto
+   0 -72 rlineto
+   -50.4 -50.4 rlineto
+   closepath
+   8 setlinewidth
+   stroke
+grestore
+
+%%Command[6]: define crown polygon 0 1.2 .2 -1 .2 1 .2 -1 .2 1.2 .2 -1.2 .2 1 .2 -1 .2 1 0 -1.2
+
+%%Command[7]: draw crown 4 8
+gsave
+   newpath
+   288 576 translate
+   0 rotate
+   0 0 moveto
+   0 86.4 rlineto
+   14.4 -72 rlineto
+   14.4 72 rlineto
+   14.4 -72 rlineto
+   14.4 86.4 rlineto
+   14.4 -86.4 rlineto
+   14.4 72 rlineto
+   14.4 -72 rlineto
+   14.4 72 rlineto
+   0 -86.4 rlineto
+   closepath
+   2.10552e-317 setlinewidth
+   stroke
+grestore
+
+%%Command[8]: define lightning polygon 1 2 -1 0 1 2 -1 0 1 2 -1 0 1 2 15
+
+%%Command[9]: draw lightning 1 2
+gsave
+   newpath
+   72 144 translate
+   0 rotate
+   0 0 moveto
+   72 144 rlineto
+   -72 0 rlineto
+   72 144 rlineto
+   -72 0 rlineto
+   72 144 rlineto
+   -72 0 rlineto
+   72 144 rlineto
+   closepath
+   15 setlinewidth
+   stroke
+grestore
+
+showpage
+grestoreall
+
+%%Trailer
+%%Pages: 1
+%%EOF

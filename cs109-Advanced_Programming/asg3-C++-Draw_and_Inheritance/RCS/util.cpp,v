@@ -1,0 +1,260 @@
+head	1.5;
+access;
+symbols;
+locks;
+comment	@// @;
+
+
+1.5
+date	2011.02.15.07.57.05;	author dmfrank;	state -;
+branches;
+next	1.4;
+
+1.4
+date	2011.02.14.18.49.39;	author dmfrank;	state -;
+branches;
+next	1.3;
+
+1.3
+date	2011.02.14.08.25.26;	author dmfrank;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2011.02.02.16.39.52;	author dmfrank;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2011.02.02.16.24.40;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@-
+@
+text
+@/* $Id: util.cpp,v 1.11 2011-02-14 23:56:21-08 dmfrank - $
+ * Derek Frank, dmfrank@@ucsc.edu
+ *
+ * NAME
+ *    util - implementation file
+ *
+ * DESCRIPTION
+ *    Implementation of util class and utilities.
+ */
+
+#include <cerrno>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <typeinfo>
+
+using namespace std;
+
+#include "util.h"
+
+int sys_info::exit_status = EXIT_SUCCESS;
+string *sys_info::execname = NULL; // Must be initialized from main().
+
+void sys_info_error (const string &condition) {
+   throw logic_error ("main() has " + condition
+               + " called sys_info::set_execname()");
+}
+
+void sys_info::set_execname (const string &argv0) {
+   if (execname != NULL) sys_info_error ("already");
+   int slashpos = argv0.find_last_of ('/') + 1;
+   execname = new string (argv0.substr (slashpos));
+   cout << boolalpha;
+   cerr << boolalpha;
+   TRACE ('u', "execname = " << execname);
+}
+
+const string &sys_info::get_execname () {
+   if (execname == NULL) sys_info_error ("not yet");
+   return *execname;
+}
+
+void sys_info::set_exit_status (int status) {
+   if (execname == NULL) sys_info_error ("not yet");
+   exit_status = status;
+}
+
+int sys_info::get_exit_status () {
+   if (execname == NULL) sys_info_error ("not yet");
+   delete execname;
+   return exit_status;
+}
+
+const string datestring () {
+   time_t clock = time (NULL);
+   struct tm *tm_ptr = localtime (&clock);
+   char timebuf[128];
+   strftime (timebuf, sizeof timebuf,
+             "%a %b %e %H:%M:%S %Z %Y", tm_ptr);
+   return timebuf;
+}
+
+list<string> split (const string &line, const string &delimiters) {
+   list<string> words;
+   int end = 0;
+   // Loop over the string, splitting out words, and for each word
+   // thus found, append it to the output list<string>.
+   for (;;) {
+      size_t start = line.find_first_not_of (delimiters, end);
+      if (start == string::npos) break;
+      end = line.find_first_of (delimiters, start);
+      words.push_back (line.substr (start, end - start));
+   }
+   TRACE ('u', words);
+   return words;
+}
+
+ostream &complain() {
+   sys_info::set_exit_status (EXIT_FAILURE);
+   cerr << sys_info::get_execname () << ": ";
+   return cerr;
+}
+
+void syscall_error (const string &object) {
+   complain() << object << ": " << strerror (errno) << endl;
+}
+
+template <typename item_t>
+ostream &operator<< (ostream &out, const list<item_t> &vec) {
+   typename list<item_t>::const_iterator itor = vec.begin();
+   typename list<item_t>::const_iterator end = vec.end();
+   // If the list is empty, do nothing.
+   if (itor != end) {
+      // Print out the first element without a space.
+      out << *itor++;
+      // Print out the rest of the elements each preceded by a space.
+      while (itor != end) out << " " << *itor++;
+   }
+   return out;
+}
+
+template <typename type>
+string to_string (const type &that) {
+   ostringstream stream;
+   stream << that;
+   return stream.str ();
+}
+
+template <typename type>
+type from_string (const string &that) {
+   stringstream stream;
+   stream << that;
+   type result;
+   if ( !(stream >> result   // Can we read type from string?
+       && stream >> std::ws  // Flush trailing white space.
+       && stream.eof ())     // Must now be at end of stream.
+   ) {
+      throw domain_error (string (typeid (type).name ())
+            + " from_string (" + that + ")");
+   }
+   return result;
+}
+
+#include "util-inst.h"
+
+@
+
+
+1.4
+log
+@-
+@
+text
+@d1 1
+a1 1
+/* $Id: util.cpp,v 1.10 2011-02-14 10:47:17-08 dmfrank - $
+d4 5
+a8 2
+ * util
+ *    Implementation of util functions.
+@
+
+
+1.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+/* $Id: util.cpp,v 1.6 2011-02-14 00:24:14-08 dmfrank - $
+a45 1
+
+d50 1
+a53 34
+//
+// contain_num
+//    Function that returns a boolean.  Scans a given string for any
+//    number values.  Returns true if a number is found and false
+//    otherwise.
+//
+bool contain_num (const string &str) {
+   string::const_iterator itor = str.begin ();
+   string::const_iterator end = str.end ();
+   for (; itor != end; ++itor) {
+      unsigned char ctemp = *itor;
+      double dtemp = ctemp -'0';
+      if (dtemp >= 0 && dtemp <= 9) return true;
+   }
+   return false;
+}
+
+//
+// contain_nonnum
+//    Function that returns a boolean.  Scans a given string for any
+//    non-number values.  Returns true if non-numbers are found and
+//    false otherwise.
+//
+bool contain_nonnum (const string &str) {
+   string::const_iterator itor = str.begin ();
+   string::const_iterator end = str.end ();
+   for (; itor != end; ++itor) {
+      unsigned char ctemp = *itor;
+      double dtemp = ctemp -'0';
+      if (dtemp > 9) return true;
+   }
+   return false;
+}
+
+@
+
+
+1.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+/* $Id: interp.cpp,v 1.1 2011-02-02 08:09:48-08 dmfrank - $
+d3 3
+d46 1
+d54 34
+@
+
+
+1.1
+log
+@-
+@
+text
+@d1 3
+a3 1
+// $Id: util.cc,v 1.1 2011-01-25 18:56:05-08 - - $
+@

@@ -1,0 +1,396 @@
+CMPS-109 · Winter 2011 · Program 1 · Function pointers and pagee1lof 1
+$Id: asg1-shell-fnptrs.mm,v 1.1 2010-12-13 20:19:22-08 - - $
+/afs/cats.ucsc.edu/courses/cmps109-wm/Assignments/asg1-shell-
+fnptrs
+
+.EQ
+delim $$
+.EN
+
+1.  Overview
+
+Your first C++ program will familiarize you with the basics of the
+language, as well as the STL (Standard Template Library), which
+contains many classes which make data structures problems very easy.
+You will maintain a tree structure with a simple inheritance
+hierarchy, maintained by a map of functions.  Programming will be done
+C++ style, not C style:  Use iostream, string, and vector, rather than
+cstdio, char *, and arrays.  However, we will avoid inheritance and
+virtual functions at this time and use a union instead.
+
+2.  Program Specification
+
+The program specification is given in terms of a Unix man(1) page.
+
+NAME
+     yshell -- in memory simulated tree shell
+
+SYNOPSIS
+     yshell [-@ flags]
+
+DESCRIPTION
+     This shell reads commands from stdin and write output to stdout,
+     with errors being set to cerr.  Each line read by the shell is
+     parsed into words by splitting using space characters, with any
+     number of spaces between words.  There may also be leading and
+     trailing spaces.  The first word on any line is a command to be
+     simulated, and the rest are operands to that command.  If either
+     stdin or stdout is not a tty, each line from stdin is echoed to
+     stdout.
+
+     The commands modify an inode tree, where each inode is either a
+     file or a directory.  Files contain data and directories contain
+     inodes.  An inode is specified by means of a pathname.  A
+     pathname consists of a sequence of characters separated by slash
+     (/) characters.1
+
+     The inode tree has a root, which is a special node, and also a
+     current inode as well.  Whenever a pathname is decoded, if the
+     first character is a slash, decoding begins at the root,
+     otherwise it begins with the current directory.  Whenever a
+     pathname component is a dot (.), it refers to the current
+     directory.  If a component is a double dot (..) it refers to the
+     parent of the current directory.  Every directory has both of
+     these entries, with the root being its own parent.
+
+     Every inode has three attributes:  an inode number, which is
+     uniquely assigned, starting from 1 for the root;  contents, which
+     is a vector of inodes for a directory, and text for a file;  and
+     a size, which is the byte count for text, and the number of sub-
+     inodes for a directory.
+
+OPERANDS
+     None.  All input comes from stdin.
+
+OPTIONS
+     The -@ option is followed by a sequence of flags to enable
+     debugging output, which is written to cerr.
+
+COMMANDS
+     The following commands are interpreted.  Error messages are
+     printed and nothing is done in the case of invalid operands.
+
+     # string
+          If the first non-space character on a line is a hash, the
+          line is a comment and is ignored.
+
+     cat pathname...
+          The contents of each file is copied to stdout.  An error is
+          reported if no files are specified, a file does not exist,
+          or is a directory.
+
+     cd [pathname]
+          The current directory is set the the pathname given.  If no
+          pathname is specified, the root directory (/) is used.  It
+          is an error if the pathname does not exist or is a plain
+          file, or if more than one operand is given.
+
+     echo [words...]
+          The string, which may be empty, is echoed to stdout on a
+          line by itself.
+
+     exit [status]
+          Exit the program with the given status.  If the status is
+          missing, exit with status 0.  If a non-numeric argument is
+          given, exit with status 255.
+
+     ls [pathname...]
+          A description of the files or directories are printed to
+          stdout.  It is an error if any of the file or directory does
+          not exist.  If no pathname is specified, the current working
+          directory is used.  If a pathname specified is a directory,
+          then the contents of the directory are listed.  A directory
+          listed within a directory is shown by a terminating slash.
+          Elements of a directory are listed lexicographically.
+
+          For each file listed, output consists of the inode number,
+          then the size, then the filename.  Output is lined up into
+          columns and each column is separated from the next by two
+          spaces.  The numeric fields are exactly 6 characters wide
+          and the units position in a column must be aligned.
+
+     lsr [pathname...]
+          As for ls, but a recursive depth-first preorder traversal is
+          done for subdirectories.
+
+     make filename [words...]
+          The file specified is created and the rest of the words are
+          put in that file.  If the file already exists, a new one is
+          not created, but its contents are replaced.  It is an error
+          to specify a directory.  If there are no words, the file is
+          empty.
+
+     mkdir pathname
+          A new directory is created.  It is an error if a file or
+          directory of the same name already exists, or if the
+          complete pathname to the parent of this new directory does
+          not already exist.  Two entries are added to the directory,
+          namely dot (.) and dotdot (..).  Directory entries are
+          always kept in sorted lexicographic order.
+
+     prompt string
+          Set the prompt to the words specified on the command line.
+          Each word is separated from the next by one space and the
+          prompt itself is terminated by an extra space.  The default
+          prompt is a single percent sign and a space (% )
+
+     pwd
+          Prints the current working directory.
+
+     rm pathname
+          The specified file or directory is deleted (removed from its
+          parent's list of files and subdirectories).  It is an error
+          for the pathname not to exist.  If the pathname is a
+          directory, it must be empty.
+
+     rmr pathname
+          A recursive removal is done, using a depth-first postorder
+          traversal.
+
+EXIT STATUS
+
+     0    No errors were detected.
+
+     1    Error messages were printed to cerr.
+
+3.  A Sample Run
+
+The following table shows a sample run.  Each interaction with the
+shell is listed in a separate box with shell output in Courier Roman
+and user input in Courier Bold typeface.  A commentary about what is
+happening is opposite in the right column.
+
++-----------------------------------+----------------------------------+
+% pwd                               Initially the cwd is the root      |
+/                                   directory.                         |
++-----------------------------------+----------------------------------+
+% ls                                The absense of an operand to ls    |
+/:                                  means that dot is used as its      |
+|    1       2  .                   operand, which is currently the    |
+|    1       2  ..                  root.  Directories always contain  |
+|                                   at least two items, namely dot and |
+|                                   dotdot.  The inode number of the   |
+|                                   root is always inode #1.  The      |
+|                                   parent of dotdot is itself.        |
++-----------------------------------+----------------------------------+
+% make foo this is a test           Make a file called foo which       |
+|                                   contains the string ``this is a    |
+|                                   test'', which is 14 characters.  An|
+|                                   inode is allocated, namely inode   |
+|                                   #2.                                |
++-----------------------------------+----------------------------------+
+% make bar test a is this           Another file, similarly created,   |
+|                                   with inode #3.                     |
++-----------------------------------+----------------------------------+
+% ls                                Same as the previous output of ls, |
+/:                                  except with two more files.  Note  |
+|    1       4  .                   that files are kept in             |
+|    1       4  ..                  lexicographic order, so bar is     |
+|    3      14  bar                 listed before foo.                 |
+|    2      14  foo                 |                                  |
++-----------------------------------+----------------------------------+
+% cat food                          An error message is printed,       |
+cat: food: No such file or directorycausing the return code from the   |
+|                                   shell eventually to be 1 rather    |
+|                                   than 0.  Note the error format:    |
+|                                   command followed by object causing |
+|                                   the problem followed by the reason |
+|                                   for the failure.                   |
++-----------------------------------+----------------------------------+
+% cat foo                           Files can consist of only one line,|
+this is a test                      namely a String.                   |
++-----------------------------------+----------------------------------+
+% echo O for a muse of fire         Arguments to echo are simply       |
+O for a muse of fire                written to the standard output.    |
++-----------------------------------+----------------------------------+
+% prompt =>                         The prompt is changed to the       |
+|                                   characters ``=>'' followed by a    |
+|                                   space.  Multiple words would have  |
+|                                   been permitted.                    |
++-----------------------------------+----------------------------------+
+=> rm bar                           The file bar is deleted and the    |
+|                                   size of the root directory is      |
+|                                   reduced by 1.                      |
++-----------------------------------+----------------------------------+
+=> make baz foo bar baz             A new file is created with inode   |
+|                                   #4.                                |
++-----------------------------------+----------------------------------+
+=> mkdir test                       Inode #5 is created as a directory |
+|                                   called test.  This directory is a  |
+|                                   child of the root and contains the |
+|                                   two usual entries, dot and dotdot. |
++-----------------------------------+----------------------------------+
+=> prompt %                         The prompt is changed back to a %  |
+|                                   followed by a space.               |
++-----------------------------------+----------------------------------+
+% ls /                              Just checking the contents of the  |
+/:                                  root.                              |
+|    1       5  .                   |                                  |
+|    1       5  ..                  |                                  |
+|    4      11  baz                 |                                  |
+|    2      14  foo                 |                                  |
+|    5       2  test/               |                                  |
++-----------------------------------+----------------------------------+
+% cd test                           The cwd is now test.               |
++-----------------------------------+----------------------------------+
+% pwd                               Yes, it is.                        |
+/test                               |                                  |
++-----------------------------------+----------------------------------+
+% cd                                Without arguments cd goes back to  |
+|                                   the root directory.                |
++-----------------------------------+----------------------------------+
+% pwd                               OK.                                |
+/                                   |                                  |
++-----------------------------------+----------------------------------+
+% cd test                           Go to a directory called test which|
+|                                   is a subdirectory of the cwd, whose|
+|                                   alias name is always dot.          |
++-----------------------------------+----------------------------------+
+% pwd                               |                                  |
+/test                               |                                  |
++-----------------------------------+----------------------------------+
+% cd ..                             Dotdot is always an alias for the  |
+|                                   parent of the cwd.                 |
++-----------------------------------+----------------------------------+
+% pwd                               |                                  |
+/                                   |                                  |
++-----------------------------------+----------------------------------+
+% cd test                           This would have errored out if test|
+% make me me me me                  were not a directory or did not    |
+|                                   exist.  The next available inode is|
+|                                   #6.                                |
++-----------------------------------+----------------------------------+
+% cat me                            |                                  |
+me me me                            |                                  |
++-----------------------------------+----------------------------------+
+% cd ..                             |                                  |
+% cd test                           |                                  |
++-----------------------------------+----------------------------------+
+% cat me                            |                                  |
+me me me                            |                                  |
++-----------------------------------+----------------------------------+
+% cd                                |                                  |
++-----------------------------------+----------------------------------+
+% lsr /                             Recursive directory listing.  This |
+/:                                  is done using a preorder traversal.|
+|    1       5  .                   Withing a given level,             |
+|    1       5  ..                  lexicographic ordering is used.    |
+|    4      11  baz                 Recursion will go through all      |
+|    2      14  foo                 subdirectories at all levels.      |
+|    5       3  test/               |                                  |
+/test:                              |                                  |
+|    5       3  .                   |                                  |
+|    1       5  ..                  |                                  |
+|    6       8  me                  |                                  |
++-----------------------------------+----------------------------------+
+% cd test                           |                                  |
++-----------------------------------+----------------------------------+
+% mkdir foo                         Note that foo uses inode #7, bar   |
+% cd foo                            uses inode #8, and baz uses inode  |
+% mkdir bar                         #9.                                |
+% cd bar                            |                                  |
+% mkdir baz                         |                                  |
+% cd baz                            |                                  |
++-----------------------------------+----------------------------------+
+% ls .                              At this point dot is baz and dotdot|
+.:                                  is bar.                            |
+|    9       2  .                   |                                  |
+|    8       3  ..                  |                                  |
++-----------------------------------+----------------------------------+
+% cd /                              A rather large test showing inode  |
+% lsr test                          numbers, file and directory sizes, |
+/test:                              and filenames.  Note that directory|
+|    5       4  .                   names are indicated in the listing |
+|    1       5  ..                  with a trailing slash.  Again, the |
+|    7       3  foo/                size of a file is the number of    |
+|    6       8  me                  characters in it and the size of a |
+/test/foo:                          directory is the sum of the number |
+|    7       3  .                   of files                           |
+|    5       4  ..                  |                                  |
+|    8       3  bar/                The subdirectory count is not      |
+/test/foo/bar:                      recursive.                         |
+|    8       3  .                   |                                  |
+|    7       3  ..                  |                                  |
+|    9       2  baz/                |                                  |
+/test/foo/bar/baz:                  |                                  |
+|    9       2  .                   |                                  |
+|    8       3  ..                  |                                  |
++-----------------------------------+----------------------------------+
+% ^D                                End of file or Control/D causes the|
+|                                   shell to exit.                     |
++-----------------------------------+----------------------------------+
+4.  A Tour of the Code
+
+Begin by studying the code provided in the code/ subdirectory.  There
+are four modules arranged into a header (.h) file and an
+implementation (.cc) file, the main program in yshell.cc, and, of
+course, a Makefile.  Your job is to being with these files and add
+code to complete the project.  Notice that comments are in the header
+for when specifying general functionality, and only in the
+implementation as a way of explaining how something works.
+
+Makefile            Study the various targets all, ${EXECBIN}, %.o,
+                    ci, lis, clean, spotless, submit, verify, and
+                    deps, which perform their usual offices.  Note
+                    that Solaris make does not accept this file, so
+                    use gmake instead.
+
+trace.{h,cc}        The trace module is already written for you.  It
+                    is useful in tracing through your code.  Other
+                    parts of the code may want to have more TRACE
+                    calls added.  Note that you should also use dbx(1)
+                    to track down bugs.
+
+util.{h,cc}         The util module is just a collection of
+                    independent functions which are herded together.
+                    It is a module without any cohesion, but a useful
+                    place to park various random functions.
+
+yshell.cc           The main program is mostly complete.  It scans
+                    options, then loops reading and executing
+                    commands.
+
+commands.{h,cc}     Note that the functions are provided but do not do
+                    more than print a trace.  Each function as a
+                    inode_state argument, passed by reference, which
+                    it might update, and a wordvec arlgument.
+                    words[0] is the name of the command itself, so the
+                    first argument is words[1].  This will take the
+                    most work, but commands can be added one at a
+                    time, by addition to the organization that is
+                    already there.  You may add private functions is
+                    you need to.  This is the major execution engine.
+
+inode.{h,cc}        The inode, or file system, module is the main data
+                    structure that you are working on.  As you
+                    implement commands, also implement the functions
+                    of this module as well.
+
+5.  What to Submit
+
+Submit the files Makefile, README, commands.cc, commands.h, inode.cc,
+inode.h, trace.cc, trace.h, util.cc, util.h, yshell.cc, spelled
+exactly that way.
+
+Test your submit with the target verify, which calls the script
+testsubmit, which does a fake submit under your home directory.  Run
+gmake to verify that the build is possible.  And when you run submit,
+do so from the Makefile target of that name.  That way you won't
+forget to submit a file.  If you forget to submit a file, or submit
+the wrong version, you will lose at least 50% of your program's value.
+
+Make sure that you do not get any warnings from CC and that
+checksource does not complain about anything.  Do not submit any file
+that is built by the Makefile.  If you develop with g++ on your own
+machine, port to /opt/SUNWspro/bin/CC before submitting your program.
+
+If you are doing pair programming, follow the additional instructions
+in /afs/cats.ucsc.edu/courses/cmps012b-wm/Syllabus/pair-programming/.
+
+____________________
+
+1. Warning:  The character we are referring to here is on the same key
+   as  a  question  mark (?).  It is not the backslash (\).  M*cr*$*ft
+   users beware.  With apologies to Marcus Porcius  Cato  Maior  (DXX-
+   DCV auc):  «Praeterea, censeo Microflaccidem esse delendam.»
+

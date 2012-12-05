@@ -1,0 +1,13 @@
+Script  : /afs/cats.ucsc.edu/users/e/dmfrank/usr/wm/bin/runprogram
+limit c :    0 max core file size (KB)
+limit f : 4194303 max output file size (KB)
+limit t : 4294967295 max CPU time (sec)
+stdin   : /dev/null
+stdout  : testround.dr.out
+stderr  : testround.dr.err
+log     : testround.dr.log
+base    : testround.dr
+Command : draw round.dr
+starting: pid 14865: 23:59:23.00
+finished: pid 14865: 23:59:23.00, real 0.00, user 0.00, sys 0.00
+pstatus: 0x0000 EXIT STATUS = 0

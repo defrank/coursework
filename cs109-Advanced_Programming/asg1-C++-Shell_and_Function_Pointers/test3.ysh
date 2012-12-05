@@ -1,0 +1,18 @@
+mkdir dir
+cd dir
+mkdir dir2
+mkdir dir3
+cd dir3
+pwd
+make file with stuff
+make another file with stuff
+cat fle another
+echo what happened?  the previous command is bad
+prompt ysh:
+ls .
+ls ..
+lsr /
+# Note the error in fle above, it may error out at that
+# point or print another.
+# But the command after the failed cat must be executed.
+# $Id: test3.ysh,v 1.1 2010-12-13 20:21:17-08 - - $

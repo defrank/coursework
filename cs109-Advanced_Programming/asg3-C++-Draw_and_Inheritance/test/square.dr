@@ -1,0 +1,7 @@
+# $Id: square.dr,v 1.1 2011-01-25 18:51:48-08 - - $
+define squ2 square 2
+define squ6 square 2 6
+draw squ2 2 2
+draw squ2 2 2 45
+draw squ6 4 4
+draw squ6 4 4 45

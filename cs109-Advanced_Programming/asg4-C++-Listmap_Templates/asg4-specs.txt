@@ -1,0 +1,71 @@
+========================================================================
+
+CMPS 109 - Winter 2011 - Assignment 4
+
+For this assignment you will write a template list class. There is no
+starter code, you must write from scratch. Templates are useful when
+you want very similar classes with similar functions, but different
+"types". Instead of implementing your class multiple times with
+different types, you can let the compiler do the work for you with a
+template.
+
+You will submit this assignment, due Feb 28, using the same method you
+have been using for prior assignments.  In addition to your source
+code, you must provide a Makefile and README.  If you choose to do
+pair programming, you must also submit a partner file.  All the old
+rules apply to these files...  Do not submit extraneous files.  You
+may modify an old Makefile, you'll likely need to regenerate
+Makefile.deps; this is a good discussion for the class list.
+
+Your job is to implement a "List" template class, along with some
+functions on the list. Do not use the STL for the List or Sort, the
+point is to learn to implement your own template class.  Your "List"
+class must internally implement a linked list.  You'll need to
+implement a private, nested, template Node class to hold the data and
+point to the next list element.
+
+The list class must provide the following functionality:
+ - push(TYPE), inserts the given element at the head
+ - TYPE pop(), removes and returns the head
+ - void sort(), sorts the list.  You can assume that TYPE implements
+the "<" operator so that you can compare elements while sorting.
+ - operator <<, outputs each element of the list one per line.
+ - Proper constructors, destructor and assignment operator.
+
+Your program must read from stdin until end of file storing each
+value, and then output to std out the sorted list of values.  Input
+and output will be one per line.  Ignore blank lines.  Your program
+must take as a command line argument the type of data: int, double,
+string; if no argument is given, assume int.  If the -u option is
+specified, then you must only store unique elements in the list
+(assume that TYPE implements == and !=). The executable must be
+called mylist.
+
+The program will be tested by redirecting stdin, stdout and stderr.
+Here is the command:
+mylist [-u] [int|double|string]
+
+The following are all valid:
+mylist
+mylist -u
+mylist int
+mylist string
+mylist -u string
+...
+
+You must write good code. Use .h and .cc files appropriately.  Use
+templates correctly.  Have no memory leaks.  Have no seg faults.  Only
+output error messages if you need to, otherwise be silent; pop on an
+empty list is an error, sort on an empty list isn't an error.  Write
+an error if a given line of input cannot be interpreted as the
+specified type, then continue reading in values.  Write error messages
+to std error.  You may include and use Mackey's trace module, but it
+isn't required.
+
+You can look in your previous assignments for inspiration. However,
+you will need to find reference material that allows you to get all
+the syntax right, and get it compiling.  Your textbook and the web are
+good places to get guidance. If you have no idea where to start, use
+the lab sessions and/or email the class list.
+
+========================================================================

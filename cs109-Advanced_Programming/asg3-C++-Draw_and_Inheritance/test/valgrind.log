@@ -1,0 +1,15 @@
+==14876== Memcheck, a memory error detector
+==14876== Copyright (C) 2002-2009, and GNU GPL'd, by Julian Seward et al.
+==14876== Using Valgrind-3.5.0 and LibVEX; rerun with -h for copyright info
+==14876== Command: draw round.dr square.dr text.dr
+==14876== Parent PID: 14821
+==14876== 
+==14876== 
+==14876== HEAP SUMMARY:
+==14876==     in use at exit: 0 bytes in 0 blocks
+==14876==   total heap usage: 756 allocs, 756 frees, 117,015 bytes allocated
+==14876== 
+==14876== All heap blocks were freed -- no leaks are possible
+==14876== 
+==14876== For counts of detected and suppressed errors, rerun with: -v
+==14876== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)

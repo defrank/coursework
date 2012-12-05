@@ -1,0 +1,78 @@
+%!PS-Adobe-3.0
+%%Creator: draw
+%%CreationDate: Mon Feb 14 23:59:23 PST 2011
+%%PageOrder: Ascend
+%%Orientation: Portrait
+%%SourceFile: ellipse.dr
+%%EndComments
+
+%%Page: 1 1
+18 18 translate
+/Courier findfont 10 scalefont setfont
+0 0 moveto
+(ellipse.dr:1) show
+
+%%Command[1]: # $Id: ellipse.dr,v 1.1 2011-01-25 18:51:48-08 - - $
+
+%%Command[2]: define ell2 ellipse 1 3
+
+%%Command[3]: define ell6 ellipse 1 3 6
+
+%%Command[4]: draw ell2 2 2
+gsave
+   newpath
+   /save matrix currentmatrix def
+   144 144 translate
+   0 rotate
+   1 0.333333 scale
+   0 0 108 0 360 arc
+   save setmatrix
+   2 setlinewidth
+   stroke
+grestore
+
+%%Command[5]: draw ell2 2 2 45
+gsave
+   newpath
+   /save matrix currentmatrix def
+   144 144 translate
+   45 rotate
+   1 0.333333 scale
+   0 0 108 0 360 arc
+   save setmatrix
+   2 setlinewidth
+   stroke
+grestore
+
+%%Command[6]: draw ell6 4 4
+gsave
+   newpath
+   /save matrix currentmatrix def
+   288 288 translate
+   0 rotate
+   1 0.333333 scale
+   0 0 108 0 360 arc
+   save setmatrix
+   6 setlinewidth
+   stroke
+grestore
+
+%%Command[7]: draw ell6 4 4 45
+gsave
+   newpath
+   /save matrix currentmatrix def
+   288 288 translate
+   45 rotate
+   1 0.333333 scale
+   0 0 108 0 360 arc
+   save setmatrix
+   6 setlinewidth
+   stroke
+grestore
+
+showpage
+grestoreall
+
+%%Trailer
+%%Pages: 1
+%%EOF

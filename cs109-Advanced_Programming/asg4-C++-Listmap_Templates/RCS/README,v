@@ -1,0 +1,53 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2011.03.02.02.18.03;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@$Id: README,v 1.2 2011-02-28 09:47:30-08 dmfrank - $
+Derek Frank, dmfrank@@ucsc.edu
+Assignment: asg4
+
+   This assignment contains:
+      README
+      Makefile
+      util.h
+      util.cpp
+      list.h
+      list.cpp
+      main.cpp
+
+************************************************************************
+
+   Makefile: partially written by Wesley Mackey
+             Note: Includes my own ci command called "cil" that is only
+             called for my user names dmfrank and derekmfrank.
+             Otherwise Mackey's "cid" command is called.
+
+   util.h:
+
+   util.cpp:
+
+   list.h:   
+
+   list.cpp: 
+
+   main.cpp:
+
+@

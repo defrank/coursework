@@ -1,0 +1,38 @@
+$Id: README,v 1.3 2011-03-01 18:24:31-08 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+Assignment: asg4
+
+   This assignment contains:
+      README
+      Makefile
+      util.h
+      util.cpp
+      list.h
+      list.cpp
+      main.cpp
+
+************************************************************************
+
+   Makefile: partially written by Wesley Mackey
+             Note: Includes my own ci command called "cil" that is only
+             called for my user names dmfrank and derekmfrank.
+             Otherwise Mackey's "cid" command is called.
+
+   util.h: written by Wesley Mackey
+
+   util.cpp: written by Wesley Mackey
+
+   list.h:   
+
+   list.cpp: 
+             Notes:
+             1)  Although I include pop(), I find I do not use it
+             since my destructor takes care of memory leak and I have
+             no need to remove any elements from a list, just retrieve
+             them.  I realize I could have used pop() inside of
+             operator<<, but I do not find that an efficient use of the
+             operator<<.  And no where in the assignment was it required
+             to remove any elements from the list.
+
+   main.cpp:
+

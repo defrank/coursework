@@ -1,0 +1,7 @@
+# $Id: circle.dr,v 1.1 2011-01-25 18:51:48-08 - - $
+define cir2 circle 2
+draw cir2 2 2
+draw cir2 2 2 45
+define cir6 circle 2 6
+draw cir6 4 4
+draw cir6 4 4 45

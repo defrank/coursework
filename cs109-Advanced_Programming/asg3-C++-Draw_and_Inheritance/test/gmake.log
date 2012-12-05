@@ -1,0 +1,17 @@
+Makefile:89: Makefile.deps: No such file or directory
+gmake --no-print-directory deps
+g++ -MM main.cpp interp.cpp numbers.cpp object.cpp trace.cpp util.cpp | sort | uniq >>Makefile.deps
+cil + main.cpp
+g++ -g -Wall -Wextra -Werror -c main.cpp
+cil + interp.cpp
+g++ -g -Wall -Wextra -Werror -c interp.cpp
+cil + numbers.cpp
+g++ -g -Wall -Wextra -Werror -c numbers.cpp
+cil + object.cpp
+g++ -g -Wall -Wextra -Werror -c object.cpp
+cil + trace.cpp
+g++ -g -Wall -Wextra -Werror -c trace.cpp
+cil + util.cpp
+g++ -g -Wall -Wextra -Werror -c util.cpp
+g++ -g -Wall -Wextra -Werror -o draw main.o interp.o numbers.o object.o trace.o util.o
+checksource interp.h numbers.h object.h trace.h util.h util-inst.h main.cpp interp.cpp numbers.cpp object.cpp trace.cpp util.cpp Makefile README

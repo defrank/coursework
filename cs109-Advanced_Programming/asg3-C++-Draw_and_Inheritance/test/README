@@ -1,0 +1,57 @@
+$Id: README,v 1.3 2011-02-14 22:47:07-08 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+Assignment: asg3-draw-inherit
+
+   This assignment contains:
+      README
+      Makefile
+      util.h
+      util-inst.h
+      util.cpp
+      trace.h
+      trace.cpp
+      object.h
+      object.cpp
+      numbers.h
+      numbers.cpp
+      interp.h
+      interp.cpp
+      main.cpp
+
+***********************************************************************
+
+   Makefile: partially written by Wesley Mackey
+             Includes my own ci command called "cil" that is only called
+             for my user names dmfrank and derekmfrank.  Otherwise
+             Mackey's "cid" command is called.
+
+   util.h: written by Wesley Mackey
+   
+   util.cpp: partially by Wesley Mackey
+
+   util-inst.h: written by Wesley Mackey   
+
+   trace.cpp: written by Wesley Mackey
+
+   trace.h: written by Wesley Mackey
+
+   object.h: written by Wesley Mackey
+   
+   object.cpp: partially written by Wesley Mackey
+   
+   numbers.h: written by Wesley Mackey
+   
+   numbers.cpp: written by Wesley Mackey
+
+   interp.h: written by Wesley Mackey
+
+   interp.cpp: partially written by Wesley Mackey
+      make_text(): Assumes only one space is inserted between words.   
+      startpage(): Since printing file name, page number, date, and time
+                   is not specified to be printed in the header similar
+                   to the draw.perl output, assuming just printing file
+                   name and page number in the footer is okay.  As this
+                   was how the user code was given.
+
+   main.cpp: partially written by Wesley Mackey
+

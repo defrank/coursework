@@ -1,0 +1,18 @@
+mkdir foo
+mkdir foo/bar
+mkdir foo/bar/baz
+make foo/bar/baz/file with this
+mkdir this/mkdir/should/error/out
+make foo/bar
+# make foo/bar should fail because it is a directory
+lsr /
+cd foo
+make file8 nine ten eleven
+cat file8
+cd /
+lsr /
+lsr foo foo/bar
+rmr foo
+lsr /
+# This tests decoding pathnames
+# $Id: test4.ysh,v 1.1 2010-12-13 20:21:17-08 - - $

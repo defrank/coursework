@@ -1,0 +1,77 @@
+head	1.2;
+access;
+symbols;
+locks;
+comment	@ * @;
+
+
+1.2
+date	2011.01.29.23.35.40;	author dmfrank;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2011.01.20.01.34.49;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@-
+@
+text
+@/* $Id: scanner.h,v 1.3 2011-01-19 18:42:21-08 dmfrank - $
+ * Derek Frank, dmfrank@@ucsc.edu
+ *
+ * scanner
+ *
+ */
+
+#ifndef __SCANNER_H__
+#define __SCANNER_H__
+
+#include <iostream>
+#include <utility>
+
+using namespace std;
+
+#include "trace.h"
+
+enum terminal_symbol {NUMBER, OPERATOR, SCANEOF};
+struct token_t {
+   terminal_symbol symbol;
+   string lexinfo;
+};
+
+class scanner {
+   private:
+      bool seen_eof;
+      char lookahead;
+      void advance();
+   public:
+      scanner();
+      token_t scan ();
+};
+
+ostream &operator<< (ostream &, const terminal_symbol &);
+ostream &operator<< (ostream &, const token_t &);
+
+#endif
+
+@
+
+
+1.1
+log
+@-
+@
+text
+@d1 6
+a6 1
+// $Id: scanner.h,v 1.1 2011-01-18 22:17:09-08 - - $
+@

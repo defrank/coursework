@@ -12,5 +12,16 @@ Directories:
   |  |- asg3-Java-Sparse_Matrix_ADT
   |  |- asg4-C-BFS_and_Shortest_Paths_in_Graphs
   |  |- asg5-C-DFS-and_Strong_Components_of_Graphs
+  |- cs109-Advanced_Programming
+  |  |- asg1-C++-Shell_and_Function_Pointers
+  |  |- asg2-C++-DC_and_Bigint_Class
+  |  |- asg3-C++-Draw_and_Inheritance
+  |  |- asg4-C++-Listmap_Templates
+  |  |- asg5-Java-Dining_Philosophers
   |- cs104a-Fundamental_Compiler_Design_I
-  
+  |  |- asg1-
+  |  |- asg2-
+  |  |- asg3-
+  |  |- asg4-
+  |  |- asg5-
+ 

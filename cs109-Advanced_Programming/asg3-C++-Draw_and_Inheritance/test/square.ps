@@ -1,0 +1,82 @@
+%!PS-Adobe-3.0
+%%Creator: draw
+%%CreationDate: Mon Feb 14 23:59:24 PST 2011
+%%PageOrder: Ascend
+%%Orientation: Portrait
+%%SourceFile: square.dr
+%%EndComments
+
+%%Page: 1 1
+18 18 translate
+/Courier findfont 10 scalefont setfont
+0 0 moveto
+(square.dr:1) show
+
+%%Command[1]: # $Id: square.dr,v 1.1 2011-01-25 18:51:48-08 - - $
+
+%%Command[2]: define squ2 square 2
+
+%%Command[3]: define squ6 square 2 6
+
+%%Command[4]: draw squ2 2 2
+gsave
+   newpath
+   144 144 translate
+   0 rotate
+   0 0 moveto
+   0 144 rlineto
+   144 0 rlineto
+   0 -144 rlineto
+   closepath
+   2 setlinewidth
+   stroke
+grestore
+
+%%Command[5]: draw squ2 2 2 45
+gsave
+   newpath
+   144 144 translate
+   45 rotate
+   0 0 moveto
+   0 144 rlineto
+   144 0 rlineto
+   0 -144 rlineto
+   closepath
+   2 setlinewidth
+   stroke
+grestore
+
+%%Command[6]: draw squ6 4 4
+gsave
+   newpath
+   288 288 translate
+   0 rotate
+   0 0 moveto
+   0 144 rlineto
+   144 0 rlineto
+   0 -144 rlineto
+   closepath
+   6 setlinewidth
+   stroke
+grestore
+
+%%Command[7]: draw squ6 4 4 45
+gsave
+   newpath
+   288 288 translate
+   45 rotate
+   0 0 moveto
+   0 144 rlineto
+   144 0 rlineto
+   0 -144 rlineto
+   closepath
+   6 setlinewidth
+   stroke
+grestore
+
+showpage
+grestoreall
+
+%%Trailer
+%%Pages: 1
+%%EOF

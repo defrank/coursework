@@ -1,0 +1,71 @@
+# $Id: adobefonts.dr,v 1.1 2011-01-25 18:51:48-08 - - $
+define AB text AvantGarde-Demi AvantGarde-Demi/
+define ABI text AvantGarde-DemiOblique AvantGarde-DemiOblique/
+define AI text AvantGarde-BookOblique AvantGarde-BookOblique/
+define AR text AvantGarde-Book AvantGarde-Book/
+define BMB text Bookman-Demi Bookman-Demi/
+define BMBI text Bookman-DemiItalic Bookman-DemiItalic/
+define BMI text Bookman-LightItalic Bookman-LightItalic/
+define BMR text Bookman-Light Bookman-Light/
+define CB text Courier-Bold Courier-Bold/
+define CBI text Courier-BoldOblique Courier-BoldOblique/
+define CI text Courier-Oblique Courier-Oblique/
+define CR text Courier Courier/
+define HB text Helvetica-Bold Helvetica-Bold/
+define HBI text Helvetica-BoldOblique Helvetica-BoldOblique/
+define HI text Helvetica-Oblique Helvetica-Oblique/
+define HNB text Helvetica-Narrow-Bold Helvetica-Narrow-Bold/
+define HNBI text Helvetica-Narrow-BoldOblique Helvetica-Narrow-BoldOblique/
+define HNI text Helvetica-Narrow-Oblique Helvetica-Narrow-Oblique/
+define HNR text Helvetica-Narrow Helvetica-Narrow/
+define HR text Helvetica Helvetica/
+define NB text NewCenturySchlbk-Bold NewCenturySchlbk-Bold/
+define NBI text NewCenturySchlbk-BoldItalic NewCenturySchlbk-BoldItalic/
+define NI text NewCenturySchlbk-Italic NewCenturySchlbk-Italic/
+define NR text NewCenturySchlbk-Roman NewCenturySchlbk-Roman/
+define PB text Palatino-Bold Palatino-Bold/
+define PBI text Palatino-BoldItalic Palatino-BoldItalic/
+define PI text Palatino-Italic Palatino-Italic/
+define PR text Palatino-Roman Palatino-Roman/
+define S text Symbol Symbol/
+define TB text Times-Bold Times-Bold/
+define TBI text Times-BoldItalic Times-BoldItalic/
+define TI text Times-Italic Times-Italic/
+define TR text Times-Roman Times-Roman/
+define ZCMI text ZapfChancery-MediumItalic ZapfChancery-MediumItalic/
+define ZD text ZapfDingbats ZapfDingbats/
+draw AB 1 9
+draw ABI 1 8.8
+draw AI 1 8.6
+draw AR 1 8.4
+draw BMB 1 8.2
+draw BMBI 1 8
+draw BMI 1 7.8
+draw BMR 1 7.6
+draw CB 1 7.4
+draw CBI 1 7.2
+draw CI 1 7
+draw CR 1 6.8
+draw HB 1 6.6
+draw HBI 1 6.4
+draw HI 1 6.2
+draw HNB 1 6
+draw HNBI 1 5.8
+draw HNI 1 5.6
+draw HNR 1 5.4
+draw HR 1 5.2
+draw NB 1 5
+draw NBI 1 4.8
+draw NI 1 4.6
+draw NR 1 4.4
+draw PB 1 4.2
+draw PBI 1 4
+draw PI 1 3.8
+draw PR 1 3.6
+draw S 1 3.4
+draw TB 1 3.2
+draw TBI 1 3
+draw TI 1 2.8
+draw TR 1 2.6
+draw ZCMI 1 2.4
+draw ZD 1 2.2

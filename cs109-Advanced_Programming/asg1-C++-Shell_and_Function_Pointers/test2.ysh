@@ -1,0 +1,11 @@
+Bad command.  Was a message printed, and the program continued?
+make file this is the first file
+make second file
+make third file with more stuff in it
+cat file
+cat second
+cat file second third
+ls /
+# Checking on making files and catting them.
+# Does ls with files work?
+# $Id: test2.ysh,v 1.1 2010-12-13 20:21:17-08 - - $

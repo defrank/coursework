@@ -1,0 +1,11 @@
+#!/bin/sh
+# $Id: mk.tests,v 1.1 2011-01-25 18:54:25-08 - - $
+for file in *.dr
+do
+   runprogram -otest$file draw $file
+done
+runprogram -ofileerrors draw /no/such/file /dev/null /foo/bar
+
+GRIND="valgrind --leak-check=full --show-reachable=yes"
+GRIND="$GRIND --log-file=valgrind.log"
+$GRIND draw round.dr square.dr text.dr 2>&1 | tee grind.leaks.log

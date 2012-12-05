@@ -1,0 +1,35 @@
+%!PS-Adobe-3.0
+%%Creator: draw
+%%CreationDate: Mon Feb 14 23:59:23 PST 2011
+%%PageOrder: Ascend
+%%Orientation: Portrait
+%%SourceFile: hello.dr
+%%EndComments
+
+%%Page: 1 1
+18 18 translate
+/Courier findfont 10 scalefont setfont
+0 0 moveto
+(hello.dr:1) show
+
+%%Command[1]: # $Id: hello.dr,v 1.1 2011-01-25 18:51:48-08 - - $
+
+%%Command[2]: define hello text 100 Times-BoldItalic Hello, world!
+
+%%Command[3]: draw hello 0.25 5
+gsave
+   /Times-BoldItalic findfont
+   100 scalefont setfont
+   18 360 translate
+   0 rotate
+   0 0 moveto
+   (Hello, world!)
+   show
+grestore
+
+showpage
+grestoreall
+
+%%Trailer
+%%Pages: 1
+%%EOF

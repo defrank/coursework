@@ -1,0 +1,9 @@
+# $Id: box.dr,v 1.1 2011-01-25 18:51:48-08 - - $
+define sq square 3
+define rec rectangle 2 3
+draw sq 1 1
+draw sq 1.5 2.5
+draw sq 2 2
+draw rec 0 4
+draw rec 1 5
+draw rec 2 6

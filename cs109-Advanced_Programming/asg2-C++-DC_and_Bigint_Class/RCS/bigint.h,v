@@ -1,0 +1,173 @@
+head	1.4;
+access;
+symbols;
+locks;
+comment	@ * @;
+
+
+1.4
+date	2011.02.01.07.20.08;	author dmfrank;	state -;
+branches;
+next	1.3;
+
+1.3
+date	2011.01.31.14.22.52;	author dmfrank;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2011.01.29.23.35.40;	author dmfrank;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2011.01.20.01.34.49;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@-
+@
+text
+@/* $Id: bigint.h,v 1.6 2011-01-31 10:43:47-08 dmfrank - $
+ * Derek Frank, dmfrank@@ucsc.edu
+ *
+ * bigint
+ *
+ */
+
+#ifndef __BIGINT_H__
+#define __BIGINT_H__
+
+#include <exception>
+#include <iostream>
+#include <utility>
+#include <cassert>
+
+using namespace std;
+
+#include "trace.h"
+
+class bigint;
+typedef pair <bigint, bigint> bigpair;
+
+class bigint {
+      friend ostream &operator<< (ostream &, const bigint &);
+   private:
+      typedef unsigned char digit_t;
+      typedef vector <digit_t> bigvalue_t;
+      bool negative;
+      bigvalue_t *big_value;
+      bigpair div_rem (const bigint &that) const;
+      int compare (const bigint &that) const;
+      int abscompare (const bigint &that) const;
+      bigint mul_by_2 ();
+      bigint do_bigadd (const bigint &that) const;
+      bigint do_bigsub (const bigint &that) const;
+   public:
+      //
+      // Override implicit members.
+      //
+      bigint ();
+      bigint (const bigint &that);
+      bigint &operator= (const bigint &that);
+      ~bigint ();
+      //
+      // Extra ctors to make bigints.
+      //
+      bigint (const int that);
+      bigint (const string &that);
+      //
+      // Basic add/sub operators.
+      //
+      bigint operator+ (const bigint &that) const;
+      bigint operator- (const bigint &that) const;
+      bigint operator- () const;
+      int smallint () const;
+
+      //
+      // Extended operators implemented with add/sub.
+      //
+      bigint operator* (const bigint &that) const;
+      bigint operator/ (const bigint &that) const;
+      bigint operator% (const bigint &that) const;
+      bigint pow (const bigint &that) const;
+      //
+      // Comparison operators.
+      //
+      bool operator== (const bigint &that) const;
+      bool operator!= (const bigint &that) const;
+      bool operator<  (const bigint &that) const;
+      bool operator<= (const bigint &that) const;
+      bool operator>  (const bigint &that) const;
+      bool operator>= (const bigint &that) const;
+};
+
+//
+// Operators with a left side of int.
+//
+bigint operator+ (int left, const bigint &that);
+bigint operator- (int left, const bigint &that);
+bigint operator* (int left, const bigint &that);
+bigint operator/ (int left, const bigint &that);
+bigint operator% (int left, const bigint &that);
+bool operator== (int left, const bigint &that);
+bool operator!= (int left, const bigint &that);
+bool operator<  (int left, const bigint &that);
+bool operator<= (int left, const bigint &that);
+bool operator>  (int left, const bigint &that);
+bool operator>= (int left, const bigint &that);
+
+#endif
+
+@
+
+
+1.3
+log
+@-
+@
+text
+@d1 1
+a1 1
+/* $Id: bigint.h,v 1.5 2011-01-30 23:15:26-08 dmfrank - $
+d14 1
+a32 1
+      bigint &change_sign () const;
+d55 2
+@
+
+
+1.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+/* $Id: bigint.h,v 1.3 2011-01-19 18:42:21-08 dmfrank - $
+d25 4
+a28 1
+      int small_value;
+d32 1
+d34 2
+a54 1
+      int smallint () const;
+@
+
+
+1.1
+log
+@-
+@
+text
+@d1 6
+a6 1
+// $Id: bigint.h,v 1.1 2011-01-18 22:17:09-08 - - $
+@

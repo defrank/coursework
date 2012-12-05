@@ -1,0 +1,137 @@
+head	1.3;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.3
+date	2011.02.15.06.47.07;	author dmfrank;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2011.02.14.21.59.27;	author dmfrank;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2011.02.02.16.24.40;	author dmfrank;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@-
+@
+text
+@$Id: README,v 1.5 2011-02-14 22:45:56-08 dmfrank - $
+Derek Frank, dmfrank@@ucsc.edu
+Assignment: asg3-draw-inherit
+
+   This assignment contains:
+      README
+      Makefile
+      util.h
+      util-inst.h
+      util.cpp
+      trace.h
+      trace.cpp
+      object.h
+      object.cpp
+      numbers.h
+      numbers.cpp
+      interp.h
+      interp.cpp
+      main.cpp
+
+***********************************************************************
+
+   Makefile: partially written by Wesley Mackey
+             Includes my own ci command called "cil" that is only called
+             for my user names dmfrank and derekmfrank.  Otherwise
+             Mackey's "cid" command is called.
+
+   util.h: written by Wesley Mackey
+   
+   util.cpp: partially by Wesley Mackey
+
+   util-inst.h: written by Wesley Mackey   
+
+   trace.cpp: written by Wesley Mackey
+
+   trace.h: written by Wesley Mackey
+
+   object.h: written by Wesley Mackey
+   
+   object.cpp: partially written by Wesley Mackey
+   
+   numbers.h: written by Wesley Mackey
+   
+   numbers.cpp: written by Wesley Mackey
+
+   interp.h: written by Wesley Mackey
+
+   interp.cpp: partially written by Wesley Mackey
+      make_text(): Assumes only one space is inserted between words.   
+      startpage(): Since printing file name, page number, date, and time
+                   is not specified to be printed in the header similar
+                   to the draw.perl output, assuming just printing file
+                   name and page number in the footer is okay.  As this
+                   was how the user code was given.
+
+   main.cpp: partially written by Wesley Mackey
+
+@
+
+
+1.2
+log
+@-
+@
+text
+@d1 1
+a1 1
+$Id: README,v 1.2 2011-02-14 03:37:47-08 dmfrank - $
+d24 3
+a30 1
+      Added delete in get_exit_status()
+d50 7
+a57 1
+   main.cpp: written by Wesley Mackey
+@
+
+
+1.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+$Id: README,v 1.1 2011-01-19 18:12:32-08 dmfrank - $
+d27 5
+a31 4
+   util-inst.cpp: written by Wesley Mackey
+   
+   util.cpp: written by Wesley Mackey
+   
+d36 1
+a36 1
+   object.h: partially written by Wesley Mackey
+d40 1
+a40 1
+   numbers.h:
+d42 3
+a44 1
+   numbers.cpp:
+d47 1
+a48 2
+   interp.h: partially written by Wesley Mackey
+   
+@

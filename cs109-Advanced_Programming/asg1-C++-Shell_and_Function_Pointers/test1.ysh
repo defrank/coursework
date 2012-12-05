@@ -1,0 +1,8 @@
+prompt this is my prompt:
+ls /
+ls
+exit 5
+# The prompt should change.
+# ls / and ls should produce the same output
+# The exit status should be reported as 5
+# $Id: test1.ysh,v 1.1 2010-12-13 20:21:17-08 - - $

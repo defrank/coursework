@@ -1,0 +1,57 @@
+$Id: README,v 1.6 2011-01-19 09:26:15-08 dmfrank - $
+Derek Frank, dmfrank@ucsc.edu
+Assignment: asg1-shell-fnptrs
+
+   This assignment contains:
+      README
+      Makefile
+      trace.cpp
+      trace.h
+      util.cpp
+      util.h
+      commands.cpp
+      commands.h
+      inode.cpp
+      inode.h
+      yshell.cpp
+
+   * Code for trace.cpp, trace.h, util.cpp, and util.h was written by
+     Wesley Mackey.
+   * Code for commands.cpp, commands.h, inode.cpp, inode.h, yshell.cpp,
+     and Makefile was partially written by Wesley Mackey.
+
+************************************************************************
+
+   Makefile:
+      Makefile used to build the executable yshell. Also contains
+      commands ci, lis, clean, spotless, submit, deps,in and again that
+      work on the source files. Determines whether it is being used on
+      SunOS, Linux, or Darwin to determine type of compilation.
+
+   trace.cpp:
+      
+
+   trace.h:
+      
+
+   util.cpp:
+      * Function str2int was written by Wesley Mackey in str2int.cc.
+      * Funcion print_map was partially written by Wesley Mackey in
+        mapitor.cpp.
+   util.h:
+      
+
+   commands.cpp:
+      
+
+   commands.h:
+      
+
+   inode.cpp:
+      
+
+   inode.h:
+      
+
+   yshell.cpp:
+      
