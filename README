@@ -14,8 +14,8 @@ Directories:
   |  |- asg5-C-DFS-and_Strong_Components_of_Graphs
   |- cs104a-Fundamental_Compiler_Design_I
   |  |- asg1-C-Stringtable_ADT
-  |  |- asg2-C-
-  |  |- asg3-C-
+  |  |- asg2-C-Scanner
+  |  |- asg3-C-Parser
   |- cs109-Advanced_Programming
   |  |- asg1-C++-Shell_and_Function_Pointers
   |  |- asg2-C++-DC_and_Bigint_Class
@@ -26,4 +26,10 @@ Directories:
   |  |- asg2-Scheme-Silly_Basic_Interpreter
   |  |- asg3-OCaml-DC
   |  |- asg5-Prolog-Airline
- 
+  |- cs140-Artificial_Intelligence
+  |  |- asg1-Lisp-
+  |  |- asg2-Lisp-
+  |  |- asg3-Lisp-
+  |  |- asg4-Lisp-
+  |- ce150-Computer_Networks
+  |  |- project-C-Client_Server_Voting

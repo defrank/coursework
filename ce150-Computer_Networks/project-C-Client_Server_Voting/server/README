@@ -1,0 +1,38 @@
+Derek Frank
+dmfrank@ucsc.edu
+CMPE 150L Winter 2012
+Project eVote - Server
+
+Files:
+    auxlib.h
+    auxlib.c
+    list.h
+    list.c
+    evs.c
+    Makefile
+
+Makefile:
+    - The Makefile will build the dependencies file, the object files,
+      and the executable file "evs" using "gcc" with the options
+      "-g -O0 -Wall -Wextra -std=gnu99".
+    Commands:
+        make
+         - will build the everything using gcc
+        make clean
+         - will remove all files produced except the executable
+        make spotless
+         - will remove all files produced
+
+auxlib.c/h:
+    - Extra utility functions written by Wesley Mackey.
+
+list.c/h:
+    - Just a queue like structure specifically designed to handle
+      candidates, votes, and voter IDs.
+
+evs: executable
+    - All arguments will be ignored, but the program will still run.
+    - Can handle multiple connections, but only handles one at a time.
+      Keeps the rest waiting until it finishes with the current
+      connection.
+    - ^C will exit the program.    

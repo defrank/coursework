@@ -1,0 +1,46 @@
+Derek Frank
+dmfrank@ucsc.edu
+CMPE 150L Winter 2012
+Project eVote - Client
+
+Files:
+    auxlib.h
+    auxlib.c
+    evc.c
+    Makefile
+
+Makefile:
+    The Makefile will build the dependencies file, the object files, and
+    the executable file "evc" using "gcc" with the options
+    "-g -O0 -Wall -Wextra -std=gnu99".
+    Commands:
+        make
+         - will build the everything using gcc
+        make clean
+         - will remove all files produced except the executable
+        make spotless
+         - will remove all files produced
+
+auxlib.c/h:
+    Extra utility functions written by Wesley Mackey.
+
+evc: executable
+    - When running the client, the user must provide the option
+      -s with an IP address.
+    - If the -v options is present, then both the voter ID and
+      candidate name should be given.
+    - evc will not accept extra arguments than the options and a voter
+      ID.
+    - If an argument exceeds 255 characters, then an error will be
+      produced, a message will be sent to stderr, and the program
+      will exit.
+    - All candidate names are converted to all lower case letters to
+      prevent ambiguity.
+    - A message is printed if the vote was successful or unsuccessful,
+      due to the voter ID number having already voted.
+    Results Format: printf ("   %20s     %3d\n", candidateName, votes);
+      i.e.,                 george     3
+                              fred    20
+                           michael   456
+    Synopsis:
+        evc [-s serverIP] [-v candidateName] [-r] voterIDnumber
