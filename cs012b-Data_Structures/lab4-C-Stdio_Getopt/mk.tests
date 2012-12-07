@@ -1,0 +1,12 @@
+#!/bin/sh
+# $Id: mk.tests,v 1.1 2009-10-29 19:54:06-07 - - $
+
+prog=./bcat
+runprogram.perl -ootest1              $prog test*data
+runprogram.perl -ootest2 -0test0.data $prog test1.data - test1.data
+runprogram.perl -ootest3              $prog -mn test*data
+runprogram.perl -ootest4              $prog -m -n test*data
+runprogram.perl -ootest5              $prog -s test*data
+runprogram.perl -ootest6              $prog -v test*data
+runprogram.perl -ootest7              $prog foo bar baz
+

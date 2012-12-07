@@ -1,0 +1,7 @@
+$Id: README,v 1.2 2009-10-29 19:59:27-07 - - $
+Derek Frank, dmfrank@ucsc.edu
+
+hostname: unix2
+
+code for bcat.c was partially written by Wesley Mackey
+Makefile was written by Wesley Mackey

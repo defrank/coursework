@@ -1,0 +1,12 @@
+#!/bin/sh -x
+# $Id: mk.build,v 1.1 2009-10-29 19:54:03-07 - - $
+#
+# Run checksource and lint then compile.
+# Make sure checksource is in your path.
+#
+lintopt="-D__EXTENSIONS__ -Xa -fd -m -u -x -errchk=%all,no%longptr64"
+#
+checksource *.[hc] Makefile README 2>&1 | tee checksource.log
+lint $lintopt *.c 2>&1 | tee lint.log
+gmake 2>&1 | tee gmake.log
+

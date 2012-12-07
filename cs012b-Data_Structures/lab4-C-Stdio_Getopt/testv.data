@@ -1,0 +1,9 @@
+$Id: testv.data,v 1.1 2009-10-29 19:53:32-07 - - $
+This file has some unprintable characters in it.
+bell
+escape
+ackspace
+ctrlx
+???
+?????
+

@@ -1,0 +1,84 @@
+$Id: SCORE,v 1.1 2009-10-29 19:53:55-07 - - $
+
+Copy this file into the student's submit directory and edit it.
+
+Student's name and username:
+
+For any point deduction, note it in the left margin and add a
+comment under it indicating why the loss of points.  Assign a
+point value for each between 0 and the max indicated in parens.
+
+Lint: Do not deduct points for the msssage:
+   function returns value which is always ignored
+       printf fprintf fclose
+and other common functions whose return values are usually ignored.
+
+*****************************************************************
+
+CODE = 15 points
+
+   Add up the following out of 15.  If the total is 16,
+   record 15 instead.  (One free error.)
+
+   (2) checksource did not complain
+
+   (2) lint did not complain (except OK as spec above)
+
+   (2) options analysis code using getopt
+
+   (2) catfile prints titles if -m
+
+   (2) catfile prints line numbers "%6d  " if -n
+
+   (2) counts and suppresses multiple lines if -s
+
+   (2) catfile prints visibly if -v
+
+   (2) iterates over all files as required
+
+   = total/15
+
+*****************************************************************
+
+TESTING = 15 points
+
+   ./mk.build
+   ./mk.tests
+
+   If mk.build did not create an executable image, assign 0 points
+   for this section.  If it did create an exec imag, then:
+
+   (1) exit status was correct in all cases
+       (0 for OK, 1 for errors to stderr)
+
+   (2) error messages to stderr, not stdout
+
+   (2) reading from files worked
+
+   (2) stdin test worked.  also worked for - as stdin
+
+   (2) -m option worked
+
+   (2) -n option worked
+
+   (2) -s option worked
+
+   (2) -v option worked
+
+   If any of the tests produced a segment fault or bus error
+   deduct 5 points from the total for this section, but do not
+   record less than 0 for this section.
+
+   = total/15
+
+*****************************************************************
+
+SUBTOTAL=
+min 1, max 30
+
+If pair programming, TOTALSCORE = SUBTOTAL - TOTAL2.
+If not, TOTALSCORE = SUBTOTAL.
+
+TOTALSCORE=
+min 1, max 30
+

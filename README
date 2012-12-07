@@ -1,4 +1,4 @@
-$Id: README,v 1.1 2012-12-04 15:35:19-08 dmfrank - $
+Id: README,v 1.1 2012-12-04 15:35:19-08 dmfrank - $
 Derek Frank (dmfrank@greenghoti.com)
 Readme
 
@@ -22,14 +22,60 @@ Directories:
   |  |- asg3-C++-Draw_and_Inheritance
   |  |- asg4-C++-Listmap_Templates
   |  |- asg5-Java-Dining_Philosophers
+  |- cs111-Operating_Systems
+  |  |- asg1-C-Shell
+  |  |- asg2-C-Synchronization
+  |  |- asg3-C-Memory_Allocation
+  |  |- asg4-C-Encryption
   |- cs112-Comparative_Programming_Languages
   |  |- asg2-Scheme-Silly_Basic_Interpreter
   |  |- asg3-OCaml-DC
   |  |- asg5-Prolog-Airline
   |- cs140-Artificial_Intelligence
-  |  |- asg1-Lisp-RPS_Safari_Agent
   |  |- asg2-Lisp-RPS_Safari_Agent
   |  |- asg3-Lisp-RPS_Safari_Agent
   |  |- asg4-Lisp-RPS_Safari_Agent
   |- ce150-Computer_Networks
   |  |- project-C-Client_Server_Voting
+
+Courses:
+  Computer Science:
+    Artificial Intelligence (CS 140)
+    Computational Models (CS 130)
+    Comparative Programming Languages (CS 112)
+    Introduction to Operating Systems (CS 111)
+    Advanced Programming (CS 109)
+    Fundamentals of Compiler Design I (CS 104A)
+    Introduction to Analysis of Algorithm (CS 102)
+    Algorithms & Abstract Data Types (CS 101)
+    Introduction to Data Structures (CS 12B/M)
+    Intermediate Programming (CS 11)
+    Introduction to Computer Science (CS 10)
+    Introduction to Programming in Java (CS 5J)
+  Computer Engineering:
+    Introduction to Computer Networks (CE 150/L)
+    Computer Architecture (CE 110)
+    Probability & Statistics for Engineers (CE 107)
+    Introduction to Networking & the Internet(CE 80N)
+    Applied Discrete Mathematics (CE 16)
+    Computer Systems & Assembly Language (CE 12/L)
+  Applied Mathematics & Statistics:
+    Computational Methods & Applications (AMS 147)
+    Introduction to Dynamical Systems (AMS 114)
+    Mathematical Methods for Engineers II (AMS 20)
+    Mathematical Methods for Engineers I (AMS 10)
+  Mathematics:
+    Multivariable Calculus (Math 23A)
+    Multivariable Calculus (Math 23B)
+  Physics:
+    Introduction to Physics I: Mechanics (Phys 6A/L)
+    Introduction to Physics III: Electricity & Magnetism (Phys 6C/N)
+  Miscellaneous:
+    Introductory Macroeconomics (Econ 2)
+    Introduction to Psychology (Psyc 1)
+    American Popular Music (Musc 11C)
+    Literary Interpretation (Lit 1)
+    Rhetoric & Inquiry (Writ 2)
+    Self & Society II(Stev 81A)
+    Self & Society (Stev 80A)
+
