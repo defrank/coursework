@@ -12,7 +12,7 @@ Directories:
   |  |- asg3-Java-Sparse_Matrix_ADT
   |  |- asg4-C-BFS_and_Shortest_Paths_in_Graphs
   |  |- asg5-C-DFS-and_Strong_Components_of_Graphs
-  |- cs104a-Fundamental_Compiler_Design_I
+  |- cs104a-Fundamentals_of_Compiler_Design_I
   |  |- asg1-C-Stringtable_ADT
   |  |- asg2-C-Scanner
   |  |- asg3-C-Parser
