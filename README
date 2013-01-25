@@ -37,6 +37,22 @@ Directories:
   |  |- asg4-Lisp-RPS_Safari_Agent
   |- ce150-Computer_Networks
   |  |- project-C-Client_Server_Voting
+  |- ams147-Computational_Methods_and_Application
+  |  |- asg1-Matlab-Fixed_Point_Iterative_Method
+  |  |- asg2-Matlab-Golden_Search_Method
+  |  |- asg3-Matlab-Newton_Method
+  |  |- asg4-Matlab-Numerical_Integration
+  |  |- asg5-Matlab-Error_Estimation_and_Euler
+  |  |- asg6-Matlab-Runge_Kutta_Method
+  |  |- asg7-Matlab-Interpolation
+  |  |- asg8-Matlab-Fast_Fourier_Transforms
+  |  |- project-Matlab-Three_Body_System
+  |- ams114-Dynamical_Systems
+  |  |- asg5-Octave-Stability
+  |  |- asg6-Octave-Limit_Cycles
+  |  |- asg7-Octave-Bifurcation
+  |  |- asg8-Octave-Lorenz_Equations
+  |  |- final-Octave-Nonlinear_Dynamics_and_Chaos
 
 Courses:
   Computer Science:
