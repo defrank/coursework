@@ -74,7 +74,7 @@ sync : ci
 	git commit -a
 	git status
 	git push
-	git pull
+#git pull
 
 #
 # Clean and spotless remove genereated files
