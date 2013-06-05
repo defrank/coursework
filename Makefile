@@ -1,6 +1,6 @@
 ###############################################################################
 # $Id: Makefile,v 1.1 2012-12-04 15:35:19-08 dmfrank - $
-# Derek Frank (dmfrank@greenghoti.com)
+# Derek Frank (dmfrank@gmx.com)
 #
 # NAME
 #   Makefile
